@@ -4,6 +4,7 @@ type GetNearbyPlacesProps = {
 };
 
 const SEARCH_RADIUS = 500;
+const REQUEST_FIELDS = ["name", "formatted_address", "rating"];
 
 function useGetNearbyPlaces() {
   function getNearbyPlaces({
@@ -23,7 +24,7 @@ function useGetNearbyPlaces() {
 
     const request = {
       query: keyword,
-      fields: ["name", "formatted_address", "rating"],
+      fields: REQUEST_FIELDS,
       radius: SEARCH_RADIUS,
       location: location,
     };
