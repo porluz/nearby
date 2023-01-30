@@ -8,4 +8,6 @@ type LocationInputList = LocationInput[];
 
 export type { LocationInput, LocationInputList };
 
-export type EmptyPropsWithChildren = PropsWithChildren<Record<never, never>>;
+export type MapsService = google.maps.places.PlacesService;
+
+export type EmptyPropsWithChildren = PropsWithChildren<unknown>;
