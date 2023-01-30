@@ -1,19 +1,22 @@
 import { VisuallyHidden } from "@reach/visually-hidden";
-import { Heading } from "theme-ui";
+import { Card, Heading } from "theme-ui";
 import { SearchButtonContainer } from "./components/searchButtonContainer";
 import { Locations } from "./components/locations";
 import { SearchInput } from "./components/searchInput";
+import styled from "@emotion/styled";
+
+
 
 function SearchForm() {
   return (
-    <form>
-      <VisuallyHidden>
-        <Heading as="h2">Search Form</Heading>
-      </VisuallyHidden>
-      <Locations />
-      <SearchInput />
-      <SearchButtonContainer />
-    </form>
+      <form>
+        <VisuallyHidden>
+          <Heading as="h2">Search Form</Heading>
+        </VisuallyHidden>
+        <Locations />
+        <SearchInput />
+        <SearchButtonContainer />
+      </form>
   );
 }
 

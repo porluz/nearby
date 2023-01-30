@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { useMapsServiceContext } from "../../../../../shared/contexts/mapsServiceContext";
 import { useSearchContext } from "../../../../../shared/contexts/searchContext";
 import { useGetNearbyPlaces } from "./useGetNearbyPlaces";
 
@@ -14,7 +15,10 @@ function useSearchButtonContainer() {
   } = useSearchContext();
 
   const [searching, setSearching] = useState(false);
-  const { getNearbyPlaces } = useGetNearbyPlaces();
+  const {
+    data: { mapsService },
+  } = useMapsServiceContext();
+  const { getNearbyPlaces } = useGetNearbyPlaces(mapsService);
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {

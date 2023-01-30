@@ -1,3 +1,5 @@
+import { MapsService } from "../../../../../shared/types";
+
 type GetNearbyPlacesProps = {
   keyword: string;
   coords: number[];
@@ -6,21 +8,12 @@ type GetNearbyPlacesProps = {
 const SEARCH_RADIUS = 500;
 const REQUEST_FIELDS = ["name", "formatted_address", "rating"];
 
-function useGetNearbyPlaces() {
+function useGetNearbyPlaces(mapsService: MapsService | null) {
   function getNearbyPlaces({
     keyword,
     coords,
   }: GetNearbyPlacesProps): Promise<google.maps.places.PlaceResult[]> {
     const location = new google.maps.LatLng(coords[0], coords[1]);
-
-    const map = new google.maps.Map(
-      Object.assign(document.createElement("div"), {
-        id: "map",
-      }),
-      {
-        center: location,
-      }
-    );
 
     const request = {
       query: keyword,
@@ -29,23 +22,30 @@ function useGetNearbyPlaces() {
       location: location,
     };
 
-    const service = new google.maps.places.PlacesService(map);
-
     return new Promise((resolve, reject) => {
-      service.textSearch(
-        request,
-        (
-          results: google.maps.places.PlaceResult[] | null,
-          status: google.maps.places.PlacesServiceStatus
-        ) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            resolve(results);
-          } else {
-            console.error(results);
-            reject(results);
+      if (!mapsService) {
+        console.error("Maps Service is not loaded");
+        Promise.reject(null);
+      }
+      if (mapsService !== null) {
+        mapsService.textSearch(
+          request,
+          (
+            results: google.maps.places.PlaceResult[] | null,
+            status: google.maps.places.PlacesServiceStatus
+          ) => {
+            if (
+              status === google.maps.places.PlacesServiceStatus.OK &&
+              results
+            ) {
+              resolve(results);
+            } else {
+              console.error(results);
+              reject(results);
+            }
           }
-        }
-      );
+        );
+      }
     });
   }
 
