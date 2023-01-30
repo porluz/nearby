@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useSearchContext } from "../../../shared/contexts/searchContext";
+import { useSearchContext } from "../shared/contexts/searchContext";
 
 function useSearchInput() {
   const {

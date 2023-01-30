@@ -1,4 +1,4 @@
-import { useSearchContext } from "../../shared/contexts/searchContext";
+import { usePlacesContext } from "../../shared/contexts/placesContext/usePlacesContext";
 
 function usePlaces() {
   const {
@@ -7,7 +7,7 @@ function usePlaces() {
       nearbyPlaces,
       showPlaces,
     },
-  } = useSearchContext();
+  } = usePlacesContext();
 
   const data = {
     listPlacesRef: listPlacesRef as React.MutableRefObject<HTMLUListElement>,

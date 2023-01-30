@@ -1,17 +1,19 @@
 import { useCallback, useState } from "react";
 import { useMapsServiceContext } from "../../../../shared/contexts/mapsServiceContext";
-import { useSearchContext } from "../../../../shared/contexts/searchContext";
+import { usePlacesContext } from "../../../../shared/contexts/placesContext";
+import { useSearchContext } from "../../shared/contexts/searchContext";
 import { useGetNearbyPlaces } from "./useGetNearbyPlaces";
 
 function useSearchButtonContainer() {
   const {
     data: {
       refs: { listPlacesRef },
-      searchKeyword,
-      currentLocation,
-      isFormValid,
     },
     actions: { setNearbyPlaces },
+  } = usePlacesContext();
+
+  const {
+    data: { searchKeyword, currentLocation, isFormValid },
   } = useSearchContext();
 
   const [searching, setSearching] = useState(false);

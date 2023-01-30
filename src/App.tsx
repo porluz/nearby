@@ -1,19 +1,18 @@
 import { ThemeProvider } from "theme-ui";
 import { Layout } from "./layout";
 import { MapsServiceContextProvider } from "./shared/contexts/mapsServiceContext";
-import { SearchContextProvider } from "./shared/contexts/searchContext";
 import { theme, GlobalStyles } from "./shared/theme";
+import { PlacesContextProvider } from "./shared/contexts/placesContext";
 
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <MapsServiceContextProvider>
-        <SearchContextProvider>
+        <PlacesContextProvider>
           <Layout />
-        </SearchContextProvider>
+        </PlacesContextProvider>
       </MapsServiceContextProvider>
-      
     </ThemeProvider>
   );
 }

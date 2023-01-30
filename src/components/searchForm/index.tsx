@@ -3,12 +3,11 @@ import { Card, Heading } from "theme-ui";
 import { SearchActions } from "./SearchActions";
 import { Locations } from "./Locations";
 import { SearchInput } from "./SearchInput";
-import styled from "@emotion/styled";
-
-
+import { SearchContextProvider } from "./shared/contexts/searchContext";
 
 function SearchForm() {
   return (
+    <SearchContextProvider>
       <form>
         <VisuallyHidden>
           <Heading as="h2">Search Form</Heading>
@@ -17,6 +16,7 @@ function SearchForm() {
         <SearchInput />
         <SearchActions />
       </form>
+    </SearchContextProvider>
   );
 }
 

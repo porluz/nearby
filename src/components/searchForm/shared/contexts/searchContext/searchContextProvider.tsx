@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { EmptyPropsWithChildren, LocationInput, MapsService } from "../../types";
+import { EmptyPropsWithChildren, LocationInput, MapsService } from "../../../../../shared/types";
 import { SearchContext } from "./searchContext";
 
 function SearchContextProvider({ children }: EmptyPropsWithChildren) {
@@ -13,19 +13,14 @@ function SearchContextProvider({ children }: EmptyPropsWithChildren) {
   >(null);
 
   const locationLabel = currentLocation?.label;
-  const listPlacesRef = useRef<HTMLUListElement>(null);
 
   const isFormValid = useMemo(() => {
     const validSearchInput = searchKeyword.length > 2;
     return !!(locationLabel && validSearchInput);
   }, [locationLabel, searchKeyword.length]);
 
-  const refs = {
-    listPlacesRef,
-  };
 
   const data = {
-    refs,
     currentLocation,
     searchKeyword,
     showPlaces,
