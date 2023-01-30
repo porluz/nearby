@@ -1,5 +1,5 @@
 import { usePlaces } from "./usePlaces";
-import { Heading, Card, Box } from "theme-ui";
+import { Heading, Card, Box, Link } from "theme-ui";
 import styled from "@emotion/styled";
 
 const StyledPlacesList = styled.ul`
@@ -22,7 +22,11 @@ function NearbyPlaces({ nearbyPlaces, listPlacesRef }: NearbyPlacesProps) {
             return (
               <li key={index}>
                 <Card my="md">
-                  <Heading as="h3">{place.name}</Heading>
+                  <Heading as="h3">
+                    <Link href={place.url} target="_blank" rel="noopener noreferrer">
+                      {place.name}
+                    </Link>
+                  </Heading>
                   <div>Address: {place.formatted_address}</div>
                   <div>Rating: {place.rating || "N/A"}</div>
                 </Card>

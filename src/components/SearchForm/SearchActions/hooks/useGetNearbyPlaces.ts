@@ -6,7 +6,7 @@ type GetNearbyPlacesProps = {
 };
 
 const SEARCH_RADIUS = 500;
-const REQUEST_FIELDS = ["name", "formatted_address", "rating"];
+const DETAIL_FIELDS = ["formatted_address", "url"];
 
 function useGetNearbyPlaces() {
   const {
@@ -20,8 +20,7 @@ function useGetNearbyPlaces() {
     const location = new google.maps.LatLng(lat, lng);
 
     const request = {
-      query: keyword,
-      fields: REQUEST_FIELDS,
+      keyword,
       radius: SEARCH_RADIUS,
       location: location,
     };
@@ -31,13 +30,27 @@ function useGetNearbyPlaces() {
     }
 
     return new Promise((resolve, reject) => {
-      mapsService.textSearch(
+      mapsService.nearbySearch(
         request,
-        (results: google.maps.places.PlaceResult[] | null, status: google.maps.places.PlacesServiceStatus) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            resolve(results);
+        async (
+          nearbySearchResults: google.maps.places.PlaceResult[] | null,
+          status: google.maps.places.PlacesServiceStatus
+        ) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK && nearbySearchResults) {
+            if (nearbySearchResults.length === 0) {
+              return resolve(nearbySearchResults);
+            }
+
+            const placeDetailResults = await fetchPlacesDetailsAsync(mapsService, nearbySearchResults);
+            placeDetailResults.forEach((placeDetailResult, index) => {
+              if (placeDetailResult.status === "fulfilled") {
+                nearbySearchResults[index].url = placeDetailResult.value?.url;
+                nearbySearchResults[index].formatted_address = placeDetailResult.value?.formatted_address;
+              }
+            });
+            resolve(nearbySearchResults);
           } else {
-            reject(results);
+            reject(nearbySearchResults);
           }
         }
       );
@@ -45,6 +58,42 @@ function useGetNearbyPlaces() {
   }
 
   return { getNearbyPlacesAsync };
+}
+
+function fetchPlacesDetailsAsync(
+  mapsService: google.maps.places.PlacesService,
+  nearbySearchResults: google.maps.places.PlaceResult[]
+) {
+  const placeDetailPromises = nearbySearchResults.map((nearbySearchResult) => {
+    if (!nearbySearchResult.place_id) {
+      return Promise.resolve(nearbySearchResult);
+    }
+    return fetchPlaceDetailsAsync(mapsService, nearbySearchResult.place_id);
+  });
+
+  return Promise.allSettled(placeDetailPromises);
+}
+
+function fetchPlaceDetailsAsync(
+  service: google.maps.places.PlacesService,
+  placeId: string
+): Promise<google.maps.places.PlaceResult | null> {
+  const request: google.maps.places.PlaceDetailsRequest = {
+    placeId,
+    fields: DETAIL_FIELDS,
+  };
+  return new Promise((resolve, reject) => {
+    service.getDetails(
+      request,
+      (results: google.maps.places.PlaceResult | null, status: google.maps.places.PlacesServiceStatus) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+          resolve(results);
+        } else {
+          reject(results);
+        }
+      }
+    );
+  });
 }
 
 export { useGetNearbyPlaces };
