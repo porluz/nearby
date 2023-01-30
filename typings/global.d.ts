@@ -8,9 +8,15 @@ declare module "@emotion/react" {
 
 declare module "googlemaps";
 
+export {};
+
+interface IThirdPartyLib {
+  name: string;
+}
+
 declare global {
   interface Window {
     google: typeof google;
+    ThirdPartyLib: IThirdPartyLib;
   }
 }
-
