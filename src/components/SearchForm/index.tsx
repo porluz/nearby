@@ -1,5 +1,5 @@
 import { VisuallyHidden } from "@reach/visually-hidden";
-import { Card, Heading } from "theme-ui";
+import { Heading } from "theme-ui";
 import { SearchActions } from "./SearchActions";
 import { Locations } from "./Locations";
 import { SearchInput } from "./SearchInput";

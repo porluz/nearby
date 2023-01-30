@@ -1,5 +1,5 @@
-import { useMemo, useRef, useState } from "react";
-import { EmptyPropsWithChildren, LocationInput, MapsService } from "../../../../../shared/types";
+import { useMemo, useState } from "react";
+import { EmptyPropsWithChildren, LocationInput } from "../../../../../shared/types";
 import { SearchContext } from "./searchContext";
 
 function SearchContextProvider({ children }: EmptyPropsWithChildren) {
