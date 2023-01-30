@@ -30,7 +30,7 @@ function useLocationsSelect() {
     actions: { setCurrentLocation },
   } = useSearchContext();
 
-  const [_, setTerm] = useState("");
+  const [, setTerm] = useState("");
   // const results = useLocationMatch({ term, locations });
 
   const handleChange = useCallback(
@@ -45,13 +45,8 @@ function useLocationsSelect() {
 
   const handleSelect = useCallback(
     (value: string) => {
-      const selectedLocation = locations.find(
-        (location) => location.label === value
-      );
-      if (
-        selectedLocation &&
-        currentLocation?.label !== selectedLocation.label
-      ) {
+      const selectedLocation = locations.find((location) => location.label === value);
+      if (selectedLocation && currentLocation?.label !== selectedLocation.label) {
         setCurrentLocation(selectedLocation);
       }
     },

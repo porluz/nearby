@@ -46,13 +46,7 @@ function useSearchActions() {
           setSearching(false);
         });
     },
-    [
-      listPlacesRef,
-      currentLocation,
-      getNearbyPlaces,
-      searchKeyword,
-      setNearbyPlaces,
-    ]
+    [listPlacesRef, currentLocation, getNearbyPlaces, searchKeyword, setNearbyPlaces]
   );
 
   const enabledSearchButton = isFormValid;

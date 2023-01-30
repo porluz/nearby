@@ -3,14 +3,10 @@ import { EmptyPropsWithChildren, LocationInput } from "../../../../../shared/typ
 import { SearchContext } from "./searchContext";
 
 function SearchContextProvider({ children }: EmptyPropsWithChildren) {
-  const [currentLocation, setCurrentLocation] = useState<LocationInput | null>(
-    null
-  );
+  const [currentLocation, setCurrentLocation] = useState<LocationInput | null>(null);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [showPlaces, setShowPlaces] = useState(false);
-  const [nearbyPlaces, setNearbyPlaces] = useState<
-    google.maps.places.PlaceResult[] | null
-  >(null);
+  const [nearbyPlaces, setNearbyPlaces] = useState<google.maps.places.PlaceResult[] | null>(null);
 
   const locationLabel = currentLocation?.label;
 
@@ -39,10 +35,6 @@ function SearchContextProvider({ children }: EmptyPropsWithChildren) {
     actions,
   };
 
-  return (
-    <SearchContext.Provider value={searchContextValue}>
-      {children}
-    </SearchContext.Provider>
-  );
+  return <SearchContext.Provider value={searchContextValue}>{children}</SearchContext.Provider>;
 }
 export { SearchContextProvider };

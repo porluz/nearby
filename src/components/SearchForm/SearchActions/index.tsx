@@ -34,7 +34,7 @@ const StyledButton = styled.button`
     stroke-width: 2.5px;
   }
 
-  ${props => `${props.theme.mediaQueries.small} {
+  ${(props) => `${props.theme.mediaQueries.small} {
       margin-left: auto;
       width: 200px;
     }
@@ -55,11 +55,10 @@ const StyledSearchIcon = styled(SearchIcon)`
     stroke: #299ecc;
     stroke-width: 1.5px;
   }
-  ${props => `${props.theme.mediaQueries.small} {
+  ${(props) => `${props.theme.mediaQueries.small} {
       display: none;
     }
   `}
-
 `;
 
 const ButtonBox = styled(Box)`
@@ -87,11 +86,7 @@ const SearchActions = () => {
   return (
     <Flex>
       <ButtonBox mt={"lg"}>
-        <StyledButton
-          disabled={!enabledSearchButton || searching}
-          type="submit"
-          onClick={handleClick}
-        >
+        <StyledButton disabled={!enabledSearchButton || searching} type="submit" onClick={handleClick}>
           <ButtonText>Search</ButtonText>
           <StyledSearchIcon />
         </StyledButton>

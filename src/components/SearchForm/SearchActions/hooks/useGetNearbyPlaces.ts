@@ -9,10 +9,7 @@ const SEARCH_RADIUS = 500;
 const REQUEST_FIELDS = ["name", "formatted_address", "rating"];
 
 function useGetNearbyPlaces(mapsService: MapsService | null) {
-  function getNearbyPlaces({
-    keyword,
-    coords,
-  }: GetNearbyPlacesProps): Promise<google.maps.places.PlaceResult[]> {
+  function getNearbyPlaces({ keyword, coords }: GetNearbyPlacesProps): Promise<google.maps.places.PlaceResult[]> {
     const location = new google.maps.LatLng(coords[0], coords[1]);
 
     const request = {
@@ -30,14 +27,8 @@ function useGetNearbyPlaces(mapsService: MapsService | null) {
       if (mapsService !== null) {
         mapsService.textSearch(
           request,
-          (
-            results: google.maps.places.PlaceResult[] | null,
-            status: google.maps.places.PlacesServiceStatus
-          ) => {
-            if (
-              status === google.maps.places.PlacesServiceStatus.OK &&
-              results
-            ) {
+          (results: google.maps.places.PlaceResult[] | null, status: google.maps.places.PlacesServiceStatus) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK && results) {
               resolve(results);
             } else {
               console.error(results);

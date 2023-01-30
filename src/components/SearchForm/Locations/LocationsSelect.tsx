@@ -1,10 +1,4 @@
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from "@reach/combobox";
+import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from "@reach/combobox";
 import { useLocationsSelect } from "./useLocationsSelect";
 import styled from "@emotion/styled";
 import { Box } from "theme-ui";

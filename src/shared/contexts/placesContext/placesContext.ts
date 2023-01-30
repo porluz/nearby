@@ -10,9 +10,7 @@ type PlacesContextType = {
   };
   actions: {
     setShowPlaces: (showPlaces: boolean) => void;
-    setNearbyPlaces: (
-      nearbyPlaces: google.maps.places.PlaceResult[] | null
-    ) => void;
+    setNearbyPlaces: (nearbyPlaces: google.maps.places.PlaceResult[] | null) => void;
   };
 };
 const PlacesContext = createContext<PlacesContextType | null>(null);

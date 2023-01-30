@@ -20,22 +20,12 @@ function SearchInput() {
   return (
     <>
       <label htmlFor="search-places">
-        <Text
-          sx={{ fontSize: ["md", "lg"], fontWeight: "bold" }}
-          p={2}
-          color="primary"
-        >
+        <Text sx={{ fontSize: ["md", "lg"], fontWeight: "bold" }} p={2} color="primary">
           Enter a search query
         </Text>
       </label>
       <Box p={2}>
-        <StyledInput
-          onChange={handleChange}
-          value={searchKeyword}
-          type="text"
-          name="search"
-          id="search-places"
-        />
+        <StyledInput onChange={handleChange} value={searchKeyword} type="text" name="search" id="search-places" />
       </Box>
     </>
   );

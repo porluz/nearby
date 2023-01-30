@@ -35,9 +35,7 @@ function useLoadMapsServiceAsync() {
 }
 
 async function createMapsService(): Promise<MapsService> {
-  let mapsScript = document.getElementById(
-    GOOGLE_MAPS_API_SCRIPT_ID
-  ) as HTMLScriptElement;
+  const mapsScript = document.getElementById(GOOGLE_MAPS_API_SCRIPT_ID) as HTMLScriptElement;
   if (mapsScript) {
     return Promise.reject(
       "A script with the same google map script already exists. The service may already have been loaded."
@@ -63,7 +61,7 @@ async function createMapsService(): Promise<MapsService> {
 }
 
 function load(): Promise<void> {
-  let mapsScript = document.createElement("script");
+  const mapsScript = document.createElement("script");
   mapsScript.src = getSource();
   mapsScript.id = GOOGLE_MAPS_API_SCRIPT_ID;
   document.body.appendChild(mapsScript);
@@ -78,8 +76,7 @@ function load(): Promise<void> {
 }
 
 function getSource() {
-  const key =
-    process.env.REACT_APP_GOOGLE_API_KEY ?? "MISSING_GOOGLE_MAPS_API_KEY";
+  const key = process.env.REACT_APP_GOOGLE_API_KEY ?? "MISSING_GOOGLE_MAPS_API_KEY";
   const searchParams = {
     key,
     libraries: GOOGLE_MAPS_API_LIBRARIES,

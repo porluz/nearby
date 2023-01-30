@@ -16,12 +16,7 @@ type NearbyPlacesProps = {
 function NearbyPlaces({ nearbyPlaces, listPlacesRef }: NearbyPlacesProps) {
   return (
     <>
-      <StyledPlacesList
-        as="ul"
-        aria-labelledby="places-heading"
-        ref={listPlacesRef}
-        tabIndex={-1}
-      >
+      <StyledPlacesList as="ul" aria-labelledby="places-heading" ref={listPlacesRef} tabIndex={-1}>
         {nearbyPlaces &&
           nearbyPlaces.map((place, index) => {
             return (
@@ -58,10 +53,7 @@ function Places() {
           >
             Places
           </Heading>
-          <NearbyPlaces
-            nearbyPlaces={nearbyPlaces}
-            listPlacesRef={listPlacesRef}
-          />
+          <NearbyPlaces nearbyPlaces={nearbyPlaces} listPlacesRef={listPlacesRef} />
         </>
       </Box>
     </>

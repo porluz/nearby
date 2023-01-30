@@ -2,9 +2,7 @@ import { EmptyPropsWithChildren } from "../../types";
 import { useLoadMapsServiceAsync } from "./hooks";
 import { MapsServiceContext } from "./mapsServiceContext";
 
-
 function MapsServiceContextProvider({ children }: EmptyPropsWithChildren) {
-
   const { mapsService, loading, loaded } = useLoadMapsServiceAsync();
 
   const data = {
@@ -17,10 +15,6 @@ function MapsServiceContextProvider({ children }: EmptyPropsWithChildren) {
     data,
   };
 
-  return (
-    <MapsServiceContext.Provider value={mapsServiceContext}>
-      {children}
-    </MapsServiceContext.Provider>
-  );
+  return <MapsServiceContext.Provider value={mapsServiceContext}>{children}</MapsServiceContext.Provider>;
 }
 export { MapsServiceContextProvider };

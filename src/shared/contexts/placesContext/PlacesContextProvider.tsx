@@ -4,9 +4,7 @@ import { PlacesContext } from "./placesContext";
 
 function PlacesContextProvider({ children }: EmptyPropsWithChildren) {
   const [showPlaces, setShowPlaces] = useState(false);
-  const [nearbyPlaces, setNearbyPlaces] = useState<
-    google.maps.places.PlaceResult[] | null
-  >(null);
+  const [nearbyPlaces, setNearbyPlaces] = useState<google.maps.places.PlaceResult[] | null>(null);
 
   const listPlacesRef = useRef<HTMLUListElement>(null);
 
@@ -30,10 +28,6 @@ function PlacesContextProvider({ children }: EmptyPropsWithChildren) {
     actions,
   };
 
-  return (
-    <PlacesContext.Provider value={searchContextValue}>
-      {children}
-    </PlacesContext.Provider>
-  );
+  return <PlacesContext.Provider value={searchContextValue}>{children}</PlacesContext.Provider>;
 }
 export { PlacesContextProvider };
