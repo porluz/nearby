@@ -1,4 +1,4 @@
 import { useMapsServiceContext } from "./useMapsServiceContext";
-import { MapsServiceContextProvider } from "./mapsServiceContextProvider";
+import { MapsServiceContextProvider } from "./MapsServiceContextProvider";
 
 export { MapsServiceContextProvider, useMapsServiceContext };

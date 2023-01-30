@@ -1,4 +1,4 @@
 import { useSearchContext } from "./useSearchContext";
-import { SearchContextProvider } from "./searchContextProvider";
+import { SearchContextProvider } from "./SearchContextProvider";
 
 export { SearchContextProvider, useSearchContext };

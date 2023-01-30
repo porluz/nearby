@@ -19,7 +19,6 @@ function SearchContextProvider({ children }: EmptyPropsWithChildren) {
     return !!(locationLabel && validSearchInput);
   }, [locationLabel, searchKeyword.length]);
 
-
   const data = {
     currentLocation,
     searchKeyword,
