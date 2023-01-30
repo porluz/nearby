@@ -1,2 +1,2 @@
 export { useGetNearbyPlaces } from "./useGetNearbyPlaces";
-export { useSearchButtonContainer } from "./useSearchButtonContainer";
+export { useSearchActions } from "./useSearchActions";

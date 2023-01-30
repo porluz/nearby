@@ -1,6 +1,6 @@
 import { Box, Flex } from "theme-ui";
 import styled from "@emotion/styled";
-import { useSearchButtonContainer } from "./hooks";
+import { useSearchActions } from "./hooks";
 import { ReactComponent as SearchIcon } from "./search.svg";
 
 const StyledButton = styled.button`
@@ -82,7 +82,7 @@ const SearchActions = () => {
   const {
     data: { enabledSearchButton, searching },
     actions: { handleClick },
-  } = useSearchButtonContainer();
+  } = useSearchActions();
 
   return (
     <Flex>

@@ -4,7 +4,7 @@ import { usePlacesContext } from "../../../../shared/contexts/placesContext";
 import { useSearchContext } from "../../shared/contexts/searchContext";
 import { useGetNearbyPlaces } from "./useGetNearbyPlaces";
 
-function useSearchButtonContainer() {
+function useSearchActions() {
   const {
     data: {
       refs: { listPlacesRef },
@@ -72,4 +72,4 @@ function useSearchButtonContainer() {
   };
 }
 
-export { useSearchButtonContainer };
+export { useSearchActions };
