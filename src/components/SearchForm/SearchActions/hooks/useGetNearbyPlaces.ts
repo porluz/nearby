@@ -1,4 +1,4 @@
-import { MapsService } from "../../../../shared/types";
+import { useMapsServiceContext } from "../../../../shared/contexts/mapsServiceContext";
 
 type GetNearbyPlacesProps = {
   keyword: string;
@@ -8,9 +8,16 @@ type GetNearbyPlacesProps = {
 const SEARCH_RADIUS = 500;
 const REQUEST_FIELDS = ["name", "formatted_address", "rating"];
 
-function useGetNearbyPlaces(mapsService: MapsService | null) {
-  function getNearbyPlaces({ keyword, coords }: GetNearbyPlacesProps): Promise<google.maps.places.PlaceResult[]> {
-    const location = new google.maps.LatLng(coords[0], coords[1]);
+function useGetNearbyPlaces() {
+  const {
+    data: { mapsService },
+  } = useMapsServiceContext();
+
+  function getNearbyPlacesAsync({
+    keyword,
+    coords: [lat, lng],
+  }: GetNearbyPlacesProps): Promise<google.maps.places.PlaceResult[]> {
+    const location = new google.maps.LatLng(lat, lng);
 
     const request = {
       query: keyword,
@@ -19,28 +26,25 @@ function useGetNearbyPlaces(mapsService: MapsService | null) {
       location: location,
     };
 
+    if (mapsService === null) {
+      return Promise.reject("Maps Service is not loaded");
+    }
+
     return new Promise((resolve, reject) => {
-      if (!mapsService) {
-        console.error("Maps Service is not loaded");
-        Promise.reject(null);
-      }
-      if (mapsService !== null) {
-        mapsService.textSearch(
-          request,
-          (results: google.maps.places.PlaceResult[] | null, status: google.maps.places.PlacesServiceStatus) => {
-            if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-              resolve(results);
-            } else {
-              console.error(results);
-              reject(results);
-            }
+      mapsService.textSearch(
+        request,
+        (results: google.maps.places.PlaceResult[] | null, status: google.maps.places.PlacesServiceStatus) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+            resolve(results);
+          } else {
+            reject(results);
           }
-        );
-      }
+        }
+      );
     });
   }
 
-  return { getNearbyPlaces };
+  return { getNearbyPlacesAsync };
 }
 
 export { useGetNearbyPlaces };

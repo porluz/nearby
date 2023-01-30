@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { useMapsServiceContext } from "../../../../shared/contexts/mapsServiceContext";
 import { usePlacesContext } from "../../../../shared/contexts/placesContext";
 import { useSearchContext } from "../../shared/contexts/searchContext";
 import { useGetNearbyPlaces } from "./useGetNearbyPlaces";
@@ -17,10 +16,8 @@ function useSearchActions() {
   } = useSearchContext();
 
   const [searching, setSearching] = useState(false);
-  const {
-    data: { mapsService },
-  } = useMapsServiceContext();
-  const { getNearbyPlaces } = useGetNearbyPlaces(mapsService);
+
+  const { getNearbyPlacesAsync } = useGetNearbyPlaces();
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,7 +27,7 @@ function useSearchActions() {
         return;
       }
       setSearching(true);
-      getNearbyPlaces({
+      getNearbyPlacesAsync({
         keyword: searchKeyword,
         coords: currentLocation.coords,
       })
@@ -46,7 +43,7 @@ function useSearchActions() {
           setSearching(false);
         });
     },
-    [listPlacesRef, currentLocation, getNearbyPlaces, searchKeyword, setNearbyPlaces]
+    [listPlacesRef, currentLocation, getNearbyPlacesAsync, searchKeyword, setNearbyPlaces]
   );
 
   const enabledSearchButton = isFormValid;
