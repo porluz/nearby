@@ -78,7 +78,7 @@ const ButtonText = styled.span`
   }
 `;
 
-const SearchButtonContainer = () => {
+const SearchActions = () => {
   const {
     data: { enabledSearchButton, searching },
     actions: { handleClick },
@@ -100,4 +100,4 @@ const SearchButtonContainer = () => {
   );
 };
 
-export { SearchButtonContainer };
+export { SearchActions };

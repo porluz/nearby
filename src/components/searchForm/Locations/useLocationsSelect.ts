@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useSearchContext } from "../../../../shared/contexts/searchContext";
+import { useSearchContext } from "../../../shared/contexts/searchContext";
 
 const locations = [
   { label: "Home", coords: [40.8712, -73.919] },

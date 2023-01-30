@@ -1,7 +1,7 @@
-import { SearchForm } from "./components/searchForm";
+import { SearchForm } from "./components/SearchForm";
 import styled from "@emotion/styled";
 import { Box, Card, Heading } from "theme-ui";
-import { Places } from "./components/places";
+import { Places } from "./components/Places";
 import { EmptyPropsWithChildren } from "./shared/types";
 
 function Grid({ children }: EmptyPropsWithChildren) {

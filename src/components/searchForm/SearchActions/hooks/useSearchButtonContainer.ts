@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { useMapsServiceContext } from "../../../../../shared/contexts/mapsServiceContext";
-import { useSearchContext } from "../../../../../shared/contexts/searchContext";
+import { useMapsServiceContext } from "../../../../shared/contexts/mapsServiceContext";
+import { useSearchContext } from "../../../../shared/contexts/searchContext";
 import { useGetNearbyPlaces } from "./useGetNearbyPlaces";
 
 function useSearchButtonContainer() {

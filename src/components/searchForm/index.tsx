@@ -1,8 +1,8 @@
 import { VisuallyHidden } from "@reach/visually-hidden";
 import { Card, Heading } from "theme-ui";
-import { SearchButtonContainer } from "./components/searchButtonContainer";
-import { Locations } from "./components/locations";
-import { SearchInput } from "./components/searchInput";
+import { SearchActions } from "./SearchActions";
+import { Locations } from "./Locations";
+import { SearchInput } from "./SearchInput";
 import styled from "@emotion/styled";
 
 
@@ -15,7 +15,7 @@ function SearchForm() {
         </VisuallyHidden>
         <Locations />
         <SearchInput />
-        <SearchButtonContainer />
+        <SearchActions />
       </form>
   );
 }

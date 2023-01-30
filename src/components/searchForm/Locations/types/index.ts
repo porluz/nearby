@@ -1,4 +1,4 @@
-import { LocationInputList } from "../../../../../shared/types";
+import { LocationInputList } from "../../../../shared/types";
 
 export type LocationMatchProps = {
   term: string;

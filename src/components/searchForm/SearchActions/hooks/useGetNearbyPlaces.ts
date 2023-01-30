@@ -1,4 +1,4 @@
-import { MapsService } from "../../../../../shared/types";
+import { MapsService } from "../../../../shared/types";
 
 type GetNearbyPlacesProps = {
   keyword: string;
