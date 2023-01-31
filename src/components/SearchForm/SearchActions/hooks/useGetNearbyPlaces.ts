@@ -36,9 +36,9 @@ function useGetNearbyPlaces() {
           nearbySearchResults: google.maps.places.PlaceResult[] | null,
           status: google.maps.places.PlacesServiceStatus
         ) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK && nearbySearchResults) {
+          if (status === google.maps.places.PlacesServiceStatus.OK && nearbySearchResults !== null) {
             if (nearbySearchResults.length === 0) {
-              return resolve(nearbySearchResults);
+              resolve(nearbySearchResults);
             }
 
             const placeDetailResults = await fetchPlacesDetailsAsync(mapsService, nearbySearchResults);
@@ -48,7 +48,12 @@ function useGetNearbyPlaces() {
                 nearbySearchResults[index].formatted_address = placeDetailResult.value?.formatted_address;
               }
             });
+            nearbySearchResults.sort((a, b) => {
+              return (b.rating ?? 0) - (a.rating ?? 0);
+            });
             resolve(nearbySearchResults);
+          } else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+            resolve([]);
           } else {
             reject(nearbySearchResults);
           }
@@ -86,7 +91,7 @@ function fetchPlaceDetailsAsync(
     service.getDetails(
       request,
       (results: google.maps.places.PlaceResult | null, status: google.maps.places.PlacesServiceStatus) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+        if (status === google.maps.places.PlacesServiceStatus.OK && results !== null) {
           resolve(results);
         } else {
           reject(results);

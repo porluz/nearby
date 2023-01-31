@@ -8,6 +8,11 @@ const StyledPlacesList = styled.ul`
   padding: 0;
 `;
 
+const StyledRatingText = styled.span`
+  color: ${(props) => props.theme.colors.background};
+  background-color: ${(props) => props.theme.colors.primary};
+`;
+
 type NearbyPlacesProps = {
   nearbyPlaces: google.maps.places.PlaceResult[] | null;
   listPlacesRef: React.MutableRefObject<HTMLUListElement | null>;
@@ -17,7 +22,13 @@ function NearbyPlaces({ nearbyPlaces, listPlacesRef }: NearbyPlacesProps) {
   return (
     <>
       <StyledPlacesList as="ul" aria-labelledby="places-heading" ref={listPlacesRef} tabIndex={-1}>
+        {nearbyPlaces && nearbyPlaces.length === 0 && (
+          <Card my="md">
+            <li key={1}>No results for that search query in the selected location</li>
+          </Card>
+        )}
         {nearbyPlaces &&
+          nearbyPlaces.length > 0 &&
           nearbyPlaces.map((place, index) => {
             return (
               <li key={index}>
@@ -28,7 +39,10 @@ function NearbyPlaces({ nearbyPlaces, listPlacesRef }: NearbyPlacesProps) {
                     </Link>
                   </Heading>
                   <div>Address: {place.formatted_address}</div>
-                  <div>Rating: {place.rating || "N/A"}</div>
+                  <div>
+                    <span>Rating: </span>
+                    {place.rating ? <StyledRatingText>{place.rating}</StyledRatingText> : "N/A"}
+                  </div>
                 </Card>
               </li>
             );
