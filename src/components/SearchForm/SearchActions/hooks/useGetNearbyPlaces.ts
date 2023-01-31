@@ -5,7 +5,7 @@ type GetNearbyPlacesProps = {
   coords: number[];
 };
 
-const SEARCH_RADIUS = 500;
+const SEARCH_RADIUS = 1000;
 const DETAIL_FIELDS = ["formatted_address", "url"];
 
 function useGetNearbyPlaces() {
