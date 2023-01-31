@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useSearchContext } from "../shared/contexts/searchContext";
 
 const locations = [
-  { label: "Home", coords: [40.8712, -73.919] },
+  { label: "Inwood, NYC", coords: [40.8712, -73.919] },
   { label: "Snowmass, CO", coords: [39.213, -106.9378] },
   { label: "Malibu, CA", coords: [34.0259, -118.7798] },
   { label: "Catskill, NY", coords: [42.2146, -73.9595] },
