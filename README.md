@@ -6,10 +6,10 @@ Nearby location service powered by React/Google Maps
 
 https://scintillating-belekoy-7a982a.netlify.app/
 
+## Available Scripts
+
 Requires a Google Maps API key set in env:
 `REACT_APP_GOOGLE_API_KEY=SOME_KEY`
-
-## Available Scripts
 
 In the project directory, you can run:
 
