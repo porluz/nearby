@@ -38,6 +38,8 @@ jobs:
             COMMENT="Coverage report: $ARTIFACT_URL"
             curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$COMMENT\"}" $PR_URL/comments
           when: on_success
+      - store_artifacts:
+          path: coverage
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
