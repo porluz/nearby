@@ -17,10 +17,29 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
+  create-coverage-report:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "Create coverage report"
+          command: |
+            npm run test:coverage
+            # Output the URL
+            PR_NUMBER="${CIRCLE_PULL_REQUEST##*/}"
+            PR_URL=https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pulls/$PR_NUMBER
+            echo "PR URL: $PR_URL"
+            ARTIFACT_URL=$CIRCLE_BUILD_URL/artifacts/0/coverage/index.html
+            echo "ARTIFACT URL: $ARTIFACT_URL"
+            COMMENT="Coverage report: $ARTIFACT_URL"
+            curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$COMMENT\"}" $PR_URL/comments
+          when: on_success
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  test-workflow:
     jobs:
       - say-hello
+      - create-coverage-report
