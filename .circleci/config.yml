@@ -19,9 +19,12 @@ jobs:
           command: "echo Hello, World!"
   create-coverage-report:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:16.19.0
     steps:
       - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
       - run:
           name: "Create coverage report"
           command: |
