@@ -33,7 +33,9 @@ jobs:
             PR_NUMBER="${CIRCLE_PULL_REQUEST##*/}"
             PR_URL=https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/issues/$PR_NUMBER
             echo "PR URL: $PR_URL"
-            ARTIFACT_URL=$CIRCLE_BUILD_URL/artifacts/0/coverage/index.html
+            ARTIFACT_URL="https://circleci.com/api/v1.1/project/github/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BUILD_NUM}/artifacts/${CIRCLE_ARTIFACTS}/coverage/index.html"
+            # echo "ARTIFACT_URL: $ARTIFACT_URL"
+            # ARTIFACT_URL=$CIRCLE_BUILD_URL/artifacts/0/coverage/index.html
             echo "ARTIFACT URL: $ARTIFACT_URL"
             COMMENT="Coverage report: $ARTIFACT_URL"
             curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$COMMENT\"}" $PR_URL/comments
