@@ -75,6 +75,7 @@ jobs:
               CURL_CMD="curl -w httpcode=%{http_code} -X POST 'Content-Type: application/json' -H 'Authorization: Bearer $GITHUB_TOKEN' -d @./temp.json "
               CURL_RETURN_CODE=0
               CURL_OUTPUT=`${CURL_CMD} $API_URL 2> /dev/null` || CURL_RETURN_CODE=$?
+              echo "CURL_OUTPUT: $CURL_OUTPUT"
               # Execute the curl command and store the HTTP response code
               httpCode=$(echo "${CURL_OUTPUT}" | sed -e 's/.*\httpcode=//')
             fi
