@@ -57,6 +57,7 @@ jobs:
             echo "Comment ID: $COMMENT_ID"
 
             # If the comment was found, update it; otherwise, create a new one
+            httpCode=0
             if [ "$COMMENT_ID" != "" ]; then
               echo "Existing coverage comment found. Updating it..."
               API_URL="$PR_API_ENDPOINT/comments/$COMMENT_ID"
