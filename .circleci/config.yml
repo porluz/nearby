@@ -80,7 +80,7 @@ jobs:
               echo "Curl command: $curl_command"
 
               # Execute the curl command and store the response code
-              response_code=$($curl "${curl_command[@]}")
+              response_code=$(curl "${curl_command[@]}")
             fi
 
             echo "response_code: $response_code"
