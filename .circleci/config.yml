@@ -59,15 +59,11 @@ jobs:
             # If the comment was found, update it; otherwise, create a new one
             if [ "$COMMENT_ID" != "" ]; then
               API_URL="$PR_API_ENDPOINT/comments/$COMMENT_ID"
-              curl -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT\"}" $API_URL
+              curl -X PATCH -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT\"}" $API_URL
             else
               API_URL="$PR_API_ENDPOINT/comments"
-              curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT \"}" $API_URL
+              curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$COMMENT\"}" $API_URL
             fi
-
-
-            # COMMENT="Coverage report: $ARTIFACT_URL"
-            # curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$COMMENT\"}" $PR_API_ENDPOINT/comments
           when: on_success
       - store_artifacts:
           path: coverage
