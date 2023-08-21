@@ -80,7 +80,7 @@ jobs:
               contentTypeHeader="Content-Type:application/json"
               writeOption=%{http_code}
               outOption=/dev/null
-              curl_command=(-X POST "$API_URL" -d "$payload" -H "$contentTypeHeader" -H "$authHeader" -o "$outOption" -w '"$writeOption"')
+              curl_command=(-X POST "$API_URL" -d "$payload" -H "$contentTypeHeader" -H "$authHeader" -o "$outOption" -w "'$writeOption'")
               for arg in "${curl_command[@]}"; do
                 echo "Argument: $arg"
               done
