@@ -73,10 +73,10 @@ jobs:
             if [ "$COMMENT_ID" != "" ]; then
               echo "Existing coverage comment found. Deleting it..."
               API_URL="$ISSUES_API_ENDPOINT/comments/$COMMENT_ID"
-              curl_command=(-X DELETE "$API_URL" -d "$payload" -H "$contentTypeHeader" -H "$authHeader")
+              curl_command=(-X DELETE "$API_URL" -H "$authHeader")
 
               # Execute the curl command and delete the existing comment
-              $(curl "${curl_command[@]}" -o /dev/null -w '%{http_code}')
+              $(curl "${curl_command[@]}")
 
               echo "Creating a new coverage comment..."
 
