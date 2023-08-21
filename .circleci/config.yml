@@ -36,7 +36,8 @@ jobs:
             PR_NUMBER="${CIRCLE_PULL_REQUEST##*/}"
 
             # Store the api endpoint for the PR
-            PR_API_ENDPOINT=https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/issues/$PR_NUMBER
+            ISSUES_API_ENDPOINT=https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/issues
+            PR_API_ENDPOINT="$ISSUES_API_ENDPOINT/$PR_NUMBER"
             echo "PR API ENDPOINT: $PR_API_ENDPOINT"
 
             # Store the link to the coverage report artifact
@@ -71,7 +72,7 @@ jobs:
             contentTypeHeader="Content-Type:application/json"
             if [ "$COMMENT_ID" != "" ]; then
               echo "Existing coverage comment found. Updating it..."
-              API_URL="$PR_API_ENDPOINT/comments/$COMMENT_ID"
+              API_URL="$ISSUES_API_ENDPOINT/comments/$COMMENT_ID"
               curl_command=(-X PATCH "$API_URL" -d "$payload" -H "$contentTypeHeader" -H "$authHeader")
 
               # Execute the curl command and store the response code
