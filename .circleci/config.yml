@@ -91,7 +91,6 @@ jobs:
             fi
 
             echo "response_code: $response_code"
-
             if [[ "$response_code" =~ ^2[0-9][0-9]$ ]]; then
               echo "Curl request was successful with HTTP status code $response_code"
             else
