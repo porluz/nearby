@@ -30,9 +30,6 @@ jobs:
           command: |
             npm run test:coverage
       - run:
-          name: Set Shell to Fail on Error
-          command: set -e
-      - run:
           name: "Update PR with the coverage report"
           command: |
             # Get the PR number
@@ -65,7 +62,7 @@ jobs:
               response_code=$(curl -X PATCH -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT\"}" $API_URL)
             else
               API_URL="$PR_API_ENDPOINT/comments"
-              response_code=$(curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"{{ NEW_COMMENT }}\"}" $API_URL)
+              response_code=$(curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$NEW_COMMENT\"}" $API_URL)
             fi
 
             if [[ "$response_code" =~ ^2[0-9][0-9]$ ]]; then
