@@ -26,20 +26,47 @@ jobs:
           name: Install Dependencies
           command: npm install
       - run:
-          name: "Create coverage report"
+          name: "Run tests and create coverage html report"
           command: |
             npm run test:coverage
-            # Output the URL
+      - run:
+          name: "Update PR with the coverage report"
+          command: |
+            # Get the PR number
             PR_NUMBER="${CIRCLE_PULL_REQUEST##*/}"
+
+            # Store the api endpoint for the PR
             PR_URL=https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/issues/$PR_NUMBER
             echo "PR URL: $PR_URL"
-            # ARTIFACT_URL="https://circleci.com/api/v1.1/project/github/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BUILD_NUM}/artifacts/${CIRCLE_ARTIFACTS}/coverage/index.html"
+
+            # Store the link to the coverage report artifact
             ARTIFACT_URL=https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/${CIRCLE_NODE_INDEX}/coverage/lcov-report/index.html
-            # echo "ARTIFACT_URL: $ARTIFACT_URL"
-            # ARTIFACT_URL=$CIRCLE_BUILD_URL/artifacts/0/coverage/index.html
             echo "ARTIFACT URL: $ARTIFACT_URL"
-            COMMENT="Coverage report: $ARTIFACT_URL"
-            curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$COMMENT\"}" $PR_URL/comments
+
+            # Setup the hidden comment and new comment
+            HIDDEN_COMMENT_START="<!-- Jest Coverage Comment:Begin -->"
+            HIDDEN_COMMENT_END="<!-- Jest Coverage Comment:End -->"
+            HIDDEN_COMMENT="$HIDDEN_COMMENT_START $HIDDEN_COMMENT_END"
+            NEW_COMMENT="<details><summary>Code coverage report</summary>Code coverage report is available <a href=\"$ARTIFACT_URL\">here</a>.</details>"
+
+            # Get all comments for the PR
+            COMMENTS=$(curl -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/$OWNER/$REPO/issues/$PR_NUMBER/comments)
+
+            # Find the existing comment with the hidden marker
+            COMMENT_ID=$(echo "$COMMENTS" | jq -r '.[] | select(.body | contains("'$HIDDEN_COMMENT_START'")) | .id')
+            echo "Comment ID: $COMMENT_ID"
+            # If the comment was found, update it; otherwise, create a new one
+            if [ "$COMMENT_ID" != "" ]; then
+              API_URL="$PR_URL/comments/$COMMENT_ID"
+              curl -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT\"}" $API_URL
+            else
+              API_URL="$PR_URL/comments"
+              curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT \"}" $API_URL
+            fi
+
+
+            # COMMENT="Coverage report: $ARTIFACT_URL"
+            # curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$COMMENT\"}" $PR_URL/comments
           when: on_success
       - store_artifacts:
           path: coverage
