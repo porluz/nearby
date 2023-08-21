@@ -53,8 +53,7 @@ jobs:
             COMMENTS=$(curl -H "Authorization: Bearer $GITHUB_TOKEN" "$PR_API_ENDPOINT/comments")
 
             # Find the existing comment with the hidden marker
-            echo "jq version: $(jq --version)"
-            COMMENT_ID=$(echo "$COMMENTS" | jq -r --arg COMMENT "$HIDDEN_COMMENT_START" '.[] | select(.body | contains(\$COMMENT)) | .id')
+            COMMENT_ID=$(echo "$COMMENTS" | jq -r --arg COMMENT "{{ HIDDEN_COMMENT_START }}" '.[] | select(.body | contains($COMMENT)) | .id')
             echo "Comment ID: $COMMENT_ID"
 
             # If the comment was found, update it; otherwise, create a new one
