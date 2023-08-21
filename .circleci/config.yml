@@ -47,7 +47,7 @@ jobs:
             HIDDEN_COMMENT_START="<!-- Jest Coverage Comment:Begin -->"
             HIDDEN_COMMENT_END="<!-- Jest Coverage Comment:End -->"
             HIDDEN_COMMENT="$HIDDEN_COMMENT_START $HIDDEN_COMMENT_END"
-            NEW_COMMENT="<details><summary>Code coverage report</summary>Code coverage report is available <a href='$ARTIFACT_URL'>here</a>.</details>"
+            NEW_COMMENT="<details><summary>Code coverage report</summary>Code coverage report is available <a href=\\\"$ARTIFACT_URL\\\">here</a>.</details>"
 
             # Get all comments for the PR
             COMMENTS=$(curl -H "Authorization: Bearer $GITHUB_TOKEN" "$PR_API_ENDPOINT/comments")
@@ -68,7 +68,9 @@ jobs:
               echo "Creating a new coverage comment..."
               API_URL="$PR_API_ENDPOINT/comments"
               echo "New comment: $HIDDEN_COMMENT $NEW_COMMENT"
-              curl_command="curl -X POST -H \"Authorization: Bearer $GITHUB_TOKEN\" -d \"{\"body\":\"$HIDDEN_COMMENT  $NEW_COMMENT \"}\" $API_URL"
+              json="{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT\"}"
+              echo "JSON: $json"
+              curl_command="curl -X POST -H \"Authorization: Bearer $GITHUB_TOKEN\" -d \"$json\" $API_URL"
               echo "curl command: $curl_command"
               # Execute the curl command and store the HTTP response code
               response_code=$($curl_command -o /dev/null -w '%{http_code}')
