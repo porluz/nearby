@@ -82,6 +82,7 @@ jobs:
               for arg in "${curl_command[@]}"; do
                 echo "Argument: $arg"
               done
+              echo "curl command: ${curl_command[@]}"
               # Execute the curl command and store the response code
               response_code=$(curl "${curl_command[@]}")
             fi
