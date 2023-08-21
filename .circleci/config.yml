@@ -70,7 +70,7 @@ jobs:
               echo "New comment: $HIDDEN_COMMENT $NEW_COMMENT"
               json="{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT\"}"
               echo "JSON: $json"
-              curl_command="curl -X POST -H \"Authorization: Bearer $GITHUB_TOKEN\" -d \"$json\" $API_URL"
+              curl_command="curl -X POST -H 'Authorization: Bearer $GITHUB_TOKEN' -d '$json' $API_URL"
               echo "curl command: $curl_command"
               # Execute the curl command and store the HTTP response code
               response_code=$($curl_command -o /dev/null -w '%{http_code}')
