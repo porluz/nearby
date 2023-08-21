@@ -73,7 +73,9 @@ jobs:
               echo '{}' | jq --arg body "$json_body" '. + {body: $body}' > temp.json
               json=$(cat temp.json)
               echo "JSON: $json"
-              response_code=$(curl -X POST 'Content-Type: application/json' -H 'Authorization: Bearer $GITHUB_TOKEN' -d @./temp.json $API_URL -o /dev/null -w '%{http_code}')
+              curl_command="curl -X POST 'Content-Type: application/json' -H 'Authorization: Bearer $GITHUB_TOKEN' -d @./temp.json $API_URL"
+              echo "Curl command: $curl_command"
+              response_code=$($curl_command -o /dev/null -w '%{http_code}')
             fi
 
             echo "response_code: $response_code"
