@@ -72,7 +72,7 @@ jobs:
 
             else
               echo "Creating a new coverage comment..."
-
+              
               # Create an array of curl args
               API_URL="$PR_API_ENDPOINT/comments"
               payload=@./temp.json
@@ -84,8 +84,9 @@ jobs:
               for arg in "${curl_command[@]}"; do
                 echo "Argument: $arg"
               done
-              echo "curl command: ${curl_command[@]}"
+
               # Execute the curl command and store the response code
+              echo "curl command: ${curl_command[@]}"
               response_code=$(curl "${curl_command[@]}")
             fi
 
