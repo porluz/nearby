@@ -54,7 +54,7 @@ jobs:
 
             # Find the existing comment with the hidden marker
             echo "jq version: $(jq --version)"
-            COMMENT_ID=$(echo "$COMMENTS" | jq -r '.[] | select(.body | contains("'$HIDDEN_COMMENT_START'")) | .id')
+            COMMENT_ID=$(echo "$COMMENTS" | jq -r --arg COMMENT "$HIDDEN_COMMENT_START" '.[] | select(.body | contains(\$COMMENT)) | .id')
             echo "Comment ID: $COMMENT_ID"
 
             # If the comment was found, update it; otherwise, create a new one
