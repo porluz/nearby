@@ -66,21 +66,23 @@ jobs:
 
             # If the comment was found, update it; otherwise, create a new one
             response_code=0
+            payload="@./temp.json"
+            authHeader="Authorization:Bearer $GITHUB_TOKEN"
+            contentTypeHeader="Content-Type:application/json"
             if [ "$COMMENT_ID" != "" ]; then
               echo "Existing coverage comment found. Updating it..."
               API_URL="$PR_API_ENDPOINT/comments/$COMMENT_ID"
+              curl_command=(-X PATCH "$API_URL" -d "$payload" -H "$contentTypeHeader" -H "$authHeader")
+
+              # Execute the curl command and store the response code
+              echo "curl command: ${curl_command[@]}"
+              response_code=$(curl "${curl_command[@]}" -o /dev/null -w '%{http_code}')
             else
               echo "Creating a new coverage comment..."
 
               # Create an array of curl args
               API_URL="$PR_API_ENDPOINT/comments"
-              payload="@./temp.json"
-              authHeader="Authorization:Bearer $GITHUB_TOKEN"
-              contentTypeHeader="Content-Type:application/json"
               curl_command=(-X POST "$API_URL" -d "$payload" -H "$contentTypeHeader" -H "$authHeader")
-              for arg in "${curl_command[@]}"; do
-                echo "Argument: $arg"
-              done
 
               # Execute the curl command and store the response code
               echo "curl command: ${curl_command[@]}"
