@@ -69,7 +69,8 @@ jobs:
               API_URL="$PR_API_ENDPOINT/comments"
               echo "New comment: $HIDDEN_COMMENT $NEW_COMMENT"
               json_body="$HIDDEN_COMMENT $NEW_COMMENT"
-              json=$(jq --arg body "$json_body" '. + {body: $body}' <<< '{}')
+              echo '{}' | jq --arg body "$json_body" '. + {body: $body}' > temp.json
+              json=$(cat temp.json)
               echo "JSON: $json"
               curl_command="curl -X POST -H 'Authorization: Bearer $GITHUB_TOKEN' -d '$json' $API_URL"
               echo "curl command: $curl_command"
