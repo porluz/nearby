@@ -77,8 +77,8 @@ jobs:
               API_URL="$PR_API_ENDPOINT/comments"
               payload=@./temp.json
               authHeader="Authorization:Bearer $GITHUB_TOKEN"
-              contentTypeHeader='Content-Type:application/json'
-              curl_command=(-X POST "$API_URL" -d "$payload" -H "$contentTypeHeader" -H '"$authHeader"')
+              contentTypeHeader="Content-Type:application/json"
+              curl_command=(-X POST "$API_URL" -d @./temp.json -H "$contentTypeHeader" -H '"$authHeader"')
               echo "Curl command: $curl_command"
 
               # Execute the curl command and store the response code
