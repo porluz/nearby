@@ -69,9 +69,7 @@ jobs:
               API_URL="$PR_API_ENDPOINT/comments"
               echo "New comment: $HIDDEN_COMMENT $NEW_COMMENT"
               json_body="$HIDDEN_COMMENT $NEW_COMMENT"
-              #json=$(echo '{}' | jq --arg body '<!-- Jest Coverage Comment:Begin --> <!-- Jest Coverage Comment:End --> <details><summary>Code coverage report</summary>Code coverage report is available <a href="https://output.circle-artifacts.com/output/job/8a3c903d-3d0c-4b3b-9fae-40c8e41cebef/artifacts/0/coverage/lcov-report/index.html">here</a>.' '. + {body: $body}')
-              #json="{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT\"}"
-              json=$(jq --arg body "$BODY_VAR" '. + {body: $json_body}' <<< '{}')
+              json=$(jq --arg body "$json_body" '. + {body: $body}' <<< '{}')
               echo "JSON: $json"
               curl_command="curl -X POST -H 'Authorization: Bearer $GITHUB_TOKEN' -d '$json' $API_URL"
               echo "curl command: $curl_command"
