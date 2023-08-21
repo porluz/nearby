@@ -47,8 +47,21 @@
     "lint": "eslint src",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "test:coverage": "react-scripts test --env=jsdom --coverage --changedSince=main --watchAll=false  || exit 0",
+    "test:coverage": "react-scripts test --env=jsdom  --collectCoverage=true --changedSince=main --watchAll=false",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    },
+    "coverageReporters": [
+      "html"
+    ]
   },
   "browserslist": [
     ">0.2%",
