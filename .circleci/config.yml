@@ -72,11 +72,13 @@ jobs:
 
             else
               echo "Creating a new coverage comment..."
+
+              # Create an array of curl args
               API_URL="$PR_API_ENDPOINT/comments"
               payload=@./temp.json
-              authHeader='Authorization:Bearer "'"$GITHUB_TOKEN"'"'
+              authHeader="Authorization:Bearer $GITHUB_TOKEN"
               contentTypeHeader='Content-Type:application/json'
-              curl_command=(-X POST "$API_URL" -d "$payload" -H "$contentTypeHeader" -H "$authHeader")
+              curl_command=(-X POST "$API_URL" -d "$payload" -H "$contentTypeHeader" -H '"$authHeader"')
               echo "Curl command: $curl_command"
 
               # Execute the curl command and store the response code
