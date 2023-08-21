@@ -88,6 +88,9 @@ jobs:
               httpCode=$(echo "${CURL_OUTPUT}" | sed -e 's/.*\httpcode=//')
               if [[ "$httpCode" =~ ^2[0-9][0-9]$ ]]; then
                 echo "Curl request was successful with HTTP status code $httpCode"
+              else
+                echo "Curl request failed with HTTP status code $httpCode"
+                exit 1  # Fail the CircleCI job
               fi
             fi
           when: on_success
