@@ -58,11 +58,14 @@ jobs:
 
             # If the comment was found, update it; otherwise, create a new one
             if [ "$COMMENT_ID" != "" ]; then
+              echo "Existing coverage comment found. Updating it..."
               API_URL="$PR_API_ENDPOINT/comments/$COMMENT_ID"
-              response_code=$(curl -X PATCH -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT\"}" $API_URL)
+              curl_command=$(curl -X PATCH -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$HIDDEN_COMMENT $NEW_COMMENT\"}" $API_URL)
+              response_code=$($curl_command -o /dev/null -w '%{http_code}')
             else
               API_URL="$PR_API_ENDPOINT/comments"
-              response_code=$(curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$NEW_COMMENT\"}" $API_URL)
+              curl_command=response_code=$(curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -d "{\"body\":\"$NEW_COMMENT\"}" $API_URL)
+              response_code=$($curl_command -o /dev/null -w '%{http_code}')
             fi
 
             if [[ "$response_code" =~ ^2[0-9][0-9]$ ]]; then
