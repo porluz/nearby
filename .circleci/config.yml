@@ -33,7 +33,7 @@ jobs:
           name: "Update PR with the coverage report"
           command: |
             # Get the PR number
-            #PR_NUMBER="${CIRCLE_PULL_REQUEST##*/}"
+            PR_NUMBER="${CIRCLE_PULL_REQUEST##*/}"
 
             #GITHUB_PULL_REQUEST_EVENT_BODY=$(jq --raw-output .pull_request.body "$GITHUB_EVENT_PATH")
             #PR_DESCRIPTION_PATTERN='^((.|\n)*)\*\*Reason for low FE coverage\*\*:((.|\n)*)$'
@@ -45,7 +45,6 @@ jobs:
             #fi
 
             comment_body="![Branches](https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM/artifacts/${CIRCLE_NODE_INDEX}/coverage/badge-branches.svg) ![Functions](https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM/artifacts/${CIRCLE_NODE_INDEX}/coverage/badge-functions.svg) ![Lines](https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM/artifacts/${CIRCLE_NODE_INDEX}/coverage/badge-lines.svg) ![Statements](https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM/artifacts/${CIRCLE_NODE_INDEX}/coverage/badge-statements.svg)\n\nCoverage report: [Coverage Report](https://circleci.com/gh/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM/artifacts/${CIRCLE_NODE_INDEX}/coverage/lcov-report/index.html)"
-
 
             # Store the api endpoint for the PR
             ISSUES_API_ENDPOINT=https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/issues
