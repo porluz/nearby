@@ -45,7 +45,6 @@ jobs:
             #  exit 1
             #fi
 
-            comment_body="![Branches]($COVERAGE_ARTIFACTS_URL/badge-branches.svg) ![Functions]($COVERAGE_ARTIFACTS_URL/badge-functions.svg) ![Lines]($COVERAGE_ARTIFACTS_URL/badge-lines.svg) ![Statements]($COVERAGE_ARTIFACTS_URL/badge-statements.svg)\n\nCoverage report: [Coverage Report]($COVERAGE_ARTIFACTS_URL/lcov-report/index.html)"
 
             # Store the api endpoint for the PR
             ISSUES_API_ENDPOINT="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/issues"
@@ -54,13 +53,14 @@ jobs:
 
             # Store the link to the coverage report artifact
             ARTIFACT_URL="$COVERAGE_ARTIFACTS_URL/lcov-report/index.html"
+            test_badges_content="[![Branches]($COVERAGE_ARTIFACTS_URL/badge-branches.svg)]($ARTIFACT_URL) [![Functions]($COVERAGE_ARTIFACTS_URL/badge-functions.svg)]($ARTIFACT_URL) [![Lines]($COVERAGE_ARTIFACTS_URL/badge-lines.svg)]($ARTIFACT_URL) [![Statements]($COVERAGE_ARTIFACTS_URL/badge-statements.svg)]($ARTIFACT_URL)"
             echo "ARTIFACT URL: $ARTIFACT_URL"
 
             # Setup the hidden comment and new comment
             HIDDEN_COMMENT_START="<!-- Jest Coverage Comment:Begin -->"
             HIDDEN_COMMENT_END="<!-- Jest Coverage Comment:End -->"
             HIDDEN_COMMENT="$HIDDEN_COMMENT_START $HIDDEN_COMMENT_END"
-            NEW_COMMENT="$comment_body<br><details><summary>Code coverage report</summary>Code coverage report is available <a href=\"$ARTIFACT_URL\">here</a>.</details>"
+            NEW_COMMENT="$test_badges_content"
             echo "New comment: $HIDDEN_COMMENT $NEW_COMMENT"
 
             # Create the JSON body for the comment
