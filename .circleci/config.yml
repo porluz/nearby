@@ -48,7 +48,7 @@ jobs:
             echo 'export SKIP_FE_COVERAGE_CHECK="$SKIP_FE_COVERAGE_CHECK"' >> "$BASH_ENV"
             echo "Completed determining if the test coverage job should be skipped."
       - persist_to_workspace:
-          root: /tmp/
+          root: workspace
           paths:
             - "fe_coverage"
   create-coverage-report:
@@ -56,7 +56,7 @@ jobs:
       - image: cimg/node:16.19.0
     steps:
       - attach_workspace:
-          at: /tmp/fe_coverage
+          at: /tmp/workspace
       - checkout
       - run:
           name: Install Dependencies
@@ -71,7 +71,7 @@ jobs:
             # Load the environment variables from the workspace
             echo "Loading environment variables from the workspace..."
             ls /tmp/
-            source /tmp/fe_coverage
+            source /tmp/workspace/fe_coverage
 
             if [ "$SKIP_FE_COVERAGE_CHECK" == "true" ]; then
               echo "Skipping the job..."
