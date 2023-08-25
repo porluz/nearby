@@ -14,7 +14,6 @@ fi
 
 # Get the comment body from the argument
 pr_body="$1"
-echo "PR Comment Body: $pr_body"
 
 # Move the body into a JSON payload
 echo '{}' | jq --arg body "$pr_body" '. + {body: $body}' > temp.json
