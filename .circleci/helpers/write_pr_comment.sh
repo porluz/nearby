@@ -13,10 +13,10 @@ if [ $# -eq 0 ]; then
 fi
 
 # Get the comment body from the argument
-pr_comment_body="$1"
+pr_body="$1"
 
 # Move the body into a JSON payload
-echo '{}' | jq --arg body "$pr_comment_body" '. + {body: $body}' > temp.json
+echo '{}' | jq --arg body "$pr_body" '. + {body: $body}' > temp.json
 json=$(cat temp.json)
 payload="@./temp.json"
 authHeader="Authorization:Bearer $GITHUB_TOKEN"
