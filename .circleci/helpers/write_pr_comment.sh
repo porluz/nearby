@@ -13,7 +13,7 @@ if [ $# -eq 0 ]; then
 fi
 
 # Get the comment body from the argument
-pr_body="$1"
+pr_body="hey\n\nthere"
 
 # Move the body into a JSON payload
 echo '{}' | jq --arg body "$pr_body" '. + {body: $body}' > temp.json
