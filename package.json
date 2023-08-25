@@ -55,16 +55,6 @@
     "eject": "react-scripts eject"
   },
   "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "jsdom",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
     "coverageReporters": [
       "html",
       "lcov",
