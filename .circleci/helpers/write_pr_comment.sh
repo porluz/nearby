@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Exit script if you try to use an uninitialized variable.
-# set -o nounset
-# Exit script if a statement returns a non-true return value.
-# set -o errexit
-# Use the error status of the first failure, rather than that of the last item in a pipeline.
-# set -o pipefail
-
 if [ $# -eq 0 ]; then
   echo "Error: Please provide the PR comment body as an argument."
   exit 1
@@ -18,7 +11,6 @@ pr_body="$1"
 # Move the body into a JSON payload
 echo "{\"body\":\"$pr_body\"}" > temp.json
 json=$(cat temp.json)
-echo "JSON Payload: $json"
 payload="@./temp.json"
 authHeader="Authorization:Bearer $GITHUB_TOKEN"
 contentTypeHeader="Content-Type:application/json"
