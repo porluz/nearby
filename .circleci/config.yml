@@ -93,11 +93,13 @@ jobs:
             # Load the environment variables from the workspace
             echo "Loading environment variables from the workspace..."
             ls /tmp/workspace
+            cat /tmp/workspace/fe_coverage
             source /tmp/workspace/fe_coverage
 
             # Store the link to the coverage report artifact
             test_badges_content="<br>[![Branches]($COVERAGE_ARTIFACTS_URL/badge-branches.svg)]($ARTIFACT_URL) [![Functions]($COVERAGE_ARTIFACTS_URL/badge-functions.svg)]($ARTIFACT_URL) [![Lines]($COVERAGE_ARTIFACTS_URL/badge-lines.svg)]($ARTIFACT_URL) [![Statements]($COVERAGE_ARTIFACTS_URL/badge-statements.svg)]($ARTIFACT_URL)"
             echo "ARTIFACT URL: $ARTIFACT_URL"
+            echo "PR_API_ENDPOINT: $PR_API_ENDPOINT"
 
             # Setup the hidden comment and new comment
             HIDDEN_COMMENT_START="<!-- Jest Coverage Comment:Begin -->"
