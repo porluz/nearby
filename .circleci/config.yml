@@ -58,7 +58,7 @@ jobs:
             npm run test:coverage-badges
 
             # Store the link to the coverage report artifact
-            test_badges_content=" $'\n'**FE test coverage:**$'\n'[![Branches]($COVERAGE_ARTIFACTS_URL/badge-branches.svg)]($ARTIFACT_URL) [![Functions]($COVERAGE_ARTIFACTS_URL/badge-functions.svg)]($ARTIFACT_URL) [![Lines]($COVERAGE_ARTIFACTS_URL/badge-lines.svg)]($ARTIFACT_URL) [![Statements]($COVERAGE_ARTIFACTS_URL/badge-statements.svg)]($ARTIFACT_URL)"
+            test_badges_content="**FE test coverage:**[![Branches]($COVERAGE_ARTIFACTS_URL/badge-branches.svg)]($ARTIFACT_URL) [![Functions]($COVERAGE_ARTIFACTS_URL/badge-functions.svg)]($ARTIFACT_URL) [![Lines]($COVERAGE_ARTIFACTS_URL/badge-lines.svg)]($ARTIFACT_URL) [![Statements]($COVERAGE_ARTIFACTS_URL/badge-statements.svg)]($ARTIFACT_URL)"
 
             # Setup the hidden comment and new comment
             HIDDEN_COMMENT_START="<!-- Jest Coverage Comment:Begin -->"
@@ -67,7 +67,7 @@ jobs:
             NEW_COMMENT="$test_badges_content"
 
             # Create the JSON body for the comment
-            pr_comment_body="$HIDDEN_COMMENT $NEW_COMMENT"
+            pr_comment_body="$HIDDEN_COMMENT\n\n$NEW_COMMENT"
             echo "New comment: $pr_comment_body"
 
             # Get all comments for the PR
