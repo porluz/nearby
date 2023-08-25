@@ -31,6 +31,7 @@ jobs:
       - run:
           name: Determine if test coverage job should be skipped
           command: |
+            echo "Checking if the test coverage job should be skipped..."
             UI_CHANGES_DETECTED=$(./.circleci/helpers/folder_has_changes.sh src)
             COMMIT_SKIP_COVERAGE_MESSAGE_FOUND=$(./.circleci/helpers/commit_summary_contains.sh skipTestCoverage)
             PR_DESCRIPTION_SKIP_MESSAGE_FOUND=$(./.circleci/helpers/pr_description_contains.sh $PR_API_ENDPOINT **Reason for missing FE tests**:)
@@ -44,6 +45,7 @@ jobs:
             fi
 
             echo 'export SKIP_FE_COVERAGE_CHECK="$SKIP_FE_COVERAGE_CHECK"' >> "$BASH_ENV"
+            echo "Completed determining if the test coverage job should be skipped."
       - persist_to_workspace:
           root: /tmp/
           paths:
@@ -66,6 +68,7 @@ jobs:
           name: "Update PR with the coverage report"
           command: |
             # Load the environment variables from the workspace
+            echo "Loading environment variables from the workspace..."
             source /tmp/workspace/fe_coverage
 
             if [ "$SKIP_FE_COVERAGE_CHECK" == "true" ]; then
