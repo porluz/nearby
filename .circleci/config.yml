@@ -48,7 +48,7 @@ jobs:
             echo 'export SKIP_FE_COVERAGE_CHECK="$SKIP_FE_COVERAGE_CHECK"' >> "$BASH_ENV"
             echo "Completed determining if the test coverage job should be skipped."
       - persist_to_workspace:
-          root: workspace
+          root: /tmp/
           paths:
             - "fe_coverage"
   create-coverage-report:
