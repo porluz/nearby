@@ -56,7 +56,7 @@ jobs:
       - image: cimg/node:16.19.0
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: /tmp/fe_coverage
       - checkout
       - run:
           name: Install Dependencies
