@@ -2,7 +2,7 @@ module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  coverageReporters: ["html", "json-summary"],
+  coverageReporters: ["html", "json-summary", "text"],
   coverageThreshold: {
     global: {
       branches: 80,
