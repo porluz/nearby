@@ -10,8 +10,6 @@ jobs:
       - image: cimg/node:16.19.0
     steps:
       - checkout
-      - store_artifacts:
-          path: coverage
       - run:
           name: Install Dependencies
           command: npm install
@@ -108,6 +106,8 @@ jobs:
               exit 1  # Fail the CircleCI job
             fi
           when: always
+      - store_artifacts:
+          path: coverage
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
