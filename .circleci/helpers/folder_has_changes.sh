@@ -9,6 +9,7 @@
 # set -o pipefail
 
 # Check if the folder path argument is provided
+echo "Checking for changes in the specified folder..."
 if [ $# -eq 0 ]; then
   echo "Error: Please provide the folder path as an argument."
   exit 1

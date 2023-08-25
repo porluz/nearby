@@ -8,6 +8,7 @@
 # Use the error status of the first failure, rather than that of the last item in a pipeline.
 # set -o pipefail
 
+echo "Checking the last commit message for a query string..."
 if [ $# -eq 0 ]; then
   echo "Error: Please provide the query string as an argument."
   exit 1
