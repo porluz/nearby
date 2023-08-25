@@ -32,10 +32,11 @@ jobs:
           name: Determine if test coverage job should be skipped
           command: |
             echo "Checking if the test coverage job should be skipped..."
-            UI_CHANGES_DETECTED=$(/root/project/.circleci/helpers/folder_has_changes.sh src)
-            COMMIT_SKIP_COVERAGE_MESSAGE_FOUND=$(/root/project/.circleci/helpers/commit_summary_contains.sh skipTestCoverage)
-            PR_DESCRIPTION_SKIP_MESSAGE_FOUND=$(/root/project/.circleci/helpers/pr_description_contains.sh $PR_API_ENDPOINT **Reason for missing FE tests**:)
+            UI_CHANGES_DETECTED="$(.circleci/helpers/folder_has_changes.sh src)"
+            COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$(.circleci/helpers/commit_summary_contains.sh skipTestCoverage)"
+            PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$(.circleci/helpers/pr_description_contains.sh $PR_API_ENDPOINT '**Reason for missing FE tests**:')"
             SKIP_FE_COVERAGE_CHECK="false"
+            echo "completed setting env vars"
             # Check if any of the variables is  "true"
             if [ "$UI_CHANGES_DETECTED" == "true" ]; then
               # Check if at least one of the other two variables is "true"
