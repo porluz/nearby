@@ -44,11 +44,11 @@ jobs:
                 SKIP_FE_COVERAGE_CHECK="true"
               fi
             fi
-            echo "export PR_NUMBER=$PR_NUMBER" > /tmp/fe_coverage
-            echo "export COVERAGE_ARTIFACTS_URL=$COVERAGE_ARTIFACTS_URL" > /tmp/fe_coverage
-            echo "export ISSUES_API_ENDPOINT=$ISSUES_API_ENDPOINT" > /tmp/fe_coverage
-            echo "export PR_API_ENDPOINT=$PR_API_ENDPOINT" > /tmp/fe_coverage
-            echo "export ARTIFACT_URL=$ARTIFACT_URL" > /tmp/fe_coverage
+            echo "PR_NUMBER=$PR_NUMBER" >> /tmp/fe_coverage
+            echo "COVERAGE_ARTIFACTS_URL=$COVERAGE_ARTIFACTS_URL" >> /tmp/fe_coverage
+            echo "ISSUES_API_ENDPOINT=$ISSUES_API_ENDPOINT" >> /tmp/fe_coverage
+            echo "PR_API_ENDPOINT=$PR_API_ENDPOINT" >> /tmp/fe_coverage
+            echo "ARTIFACT_URL=$ARTIFACT_URL" >> /tmp/fe_coverage
             echo "Completed determining if the test coverage job should be skipped."
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
