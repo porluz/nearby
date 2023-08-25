@@ -66,19 +66,30 @@ jobs:
       - run:
           name: "Run tests and create coverage html report"
           command: |
-            npm run test:coverage-badges
-      - run:
-          name: "Update PR with the coverage report"
-          command: |
-            # Load the environment variables from the workspace
-            echo "Loading environment variables from the workspace..."
-            ls /tmp/
-            source /tmp/workspace/fe_coverage
-
             if [ "$SKIP_FE_COVERAGE_CHECK" == "true" ]; then
               echo "Skipping the job..."
               exit 0  # Exit with success status to skip the job
             fi
+
+            set -o pipefail
+            npm run test:coverage-badges
+            if [ $? -eq 0 ]; then
+                echo "export FE_COVERAGE_FAILED=true" >> $BASH_ENV
+            else
+                echo "export FE_COVERAGE_FAILED=false" >> $BASH_ENV
+            fi
+          when: on_success
+      - run:
+          name: "Update PR with the coverage report"
+          command: |
+            if [ "$SKIP_FE_COVERAGE_CHECK" == "true" ]; then
+              echo "Skipping the job..."
+              exit 0  # Exit with success status to skip the job
+            fi
+            # Load the environment variables from the workspace
+            echo "Loading environment variables from the workspace..."
+            ls /tmp/
+            source /tmp/workspace/fe_coverage
 
             # Store the link to the coverage report artifact
             test_badges_content="<br>[![Branches]($COVERAGE_ARTIFACTS_URL/badge-branches.svg)]($ARTIFACT_URL) [![Functions]($COVERAGE_ARTIFACTS_URL/badge-functions.svg)]($ARTIFACT_URL) [![Lines]($COVERAGE_ARTIFACTS_URL/badge-lines.svg)]($ARTIFACT_URL) [![Statements]($COVERAGE_ARTIFACTS_URL/badge-statements.svg)]($ARTIFACT_URL)"
@@ -93,7 +104,6 @@ jobs:
 
             # Create the JSON body for the comment
             pr_comment_body="$HIDDEN_COMMENT $NEW_COMMENT"
-
 
             # Get all comments for the PR
             COMMENTS=$(curl -H "Authorization: Bearer $GITHUB_TOKEN" "$PR_API_ENDPOINT/comments")
@@ -129,7 +139,7 @@ jobs:
               echo "Curl request failed with HTTP status code $response_code"
               exit 1  # Fail the CircleCI job
             fi
-          when: on_success
+          when: always
       - store_artifacts:
           path: coverage
 
