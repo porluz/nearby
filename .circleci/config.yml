@@ -25,7 +25,7 @@ jobs:
             COVERAGE_ARTIFACTS_URL="https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/${CIRCLE_NODE_INDEX}/coverage"
             ISSUES_API_ENDPOINT="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/issues"
             PR_API_ENDPOINT="$ISSUES_API_ENDPOINT/$PR_NUMBER"
-            ARTIFACT_URL="$COVERAGE_ARTIFACTS_URL/lcov-report/index.html"
+            ARTIFACT_URL="$COVERAGE_ARTIFACTS_URL/index.html"
 
             echo "ARTIFACT URL: $ARTIFACT_URL"
             echo "PR_API_ENDPOINT: $PR_API_ENDPOINT"
