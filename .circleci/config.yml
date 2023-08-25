@@ -34,9 +34,16 @@ jobs:
             UI_CHANGES_DETECTED=$(./.circleci/helpers/folder_has_changes.sh src)
             COMMIT_SKIP_COVERAGE_MESSAGE_FOUND=$(./.circleci/helpers/commit_summary_contains.sh skipTestCoverage)
             PR_DESCRIPTION_SKIP_MESSAGE_FOUND=$(./.circleci/helpers/pr_description_contains.sh $PR_API_ENDPOINT **Reason for missing FE tests**:)
-            echo 'export UI_CHANGES_DETECTED="$UI_CHANGES_DETECTED"' >> "$BASH_ENV"
-            echo 'export COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$COMMIT_SKIP_COVERAGE_MESSAGE_FOUND"' >> "$BASH_ENV"
-            echo 'export PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$PR_DESCRIPTION_SKIP_MESSAGE_FOUND"' >> "$BASH_ENV"
+            SKIP_FE_COVERAGE_CHECK="false"
+            # Check if any of the variables is  "true"
+            if [ "$UI_CHANGES_DETECTED" == "true" ]; then
+              # Check if at least one of the other two variables is "true"
+              if [ "$COMMIT_SKIP_COVERAGE_MESSAGE_FOUND" == "true" ] || [ "$PR_DESCRIPTION_SKIP_MESSAGE_FOUND" == "true" ]; then
+                SKIP_FE_COVERAGE_CHECK="true"
+              fi
+            fi
+
+            echo 'export SKIP_FE_COVERAGE_CHECK="$SKIP_FE_COVERAGE_CHECK"' >> "$BASH_ENV"
       - persist_to_workspace:
           root: /tmp/
           paths:
@@ -47,78 +54,77 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
-      - when:
-          condition:
-            and:
-              - equal: ["true", $UI_CHANGES_DETECTED]
-              - equal: ["true", $COMMIT_SKIP_COVERAGE_MESSAGE_FOUND]
-              - equal: ["true", $PR_DESCRIPTION_SKIP_MESSAGE_FOUND]
-          steps:
-            - run:
-                name: Install Dependencies
-                command: npm install
-            - run:
-                name: "Run tests and create coverage html report"
-                command: |
-                  npm run test:coverage-badges
-            - run:
-                name: "Update PR with the coverage report"
-                command: |
-                  # Load the environment variables from the workspace
-                  source /tmp/workspace/fe_coverage
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: "Run tests and create coverage html report"
+          command: |
+            npm run test:coverage-badges
+      - run:
+          name: "Update PR with the coverage report"
+          command: |
+            # Load the environment variables from the workspace
+            source /tmp/workspace/fe_coverage
 
-                  # Store the link to the coverage report artifact
-                  test_badges_content="<br>[![Branches]($COVERAGE_ARTIFACTS_URL/badge-branches.svg)]($ARTIFACT_URL) [![Functions]($COVERAGE_ARTIFACTS_URL/badge-functions.svg)]($ARTIFACT_URL) [![Lines]($COVERAGE_ARTIFACTS_URL/badge-lines.svg)]($ARTIFACT_URL) [![Statements]($COVERAGE_ARTIFACTS_URL/badge-statements.svg)]($ARTIFACT_URL)"
-                  echo "ARTIFACT URL: $ARTIFACT_URL"
+            if [ "$SKIP_FE_COVERAGE_CHECK" == "true" ]; then
+              echo "Skipping the job..."
+              exit 0  # Exit with success status to skip the job
+            fi
 
-                  # Setup the hidden comment and new comment
-                  HIDDEN_COMMENT_START="<!-- Jest Coverage Comment:Begin -->"
-                  HIDDEN_COMMENT_END="<!-- Jest Coverage Comment:End -->"
-                  HIDDEN_COMMENT="$HIDDEN_COMMENT_START $HIDDEN_COMMENT_END"
-                  NEW_COMMENT="$test_badges_content"
-                  echo "New comment: $HIDDEN_COMMENT $NEW_COMMENT"
+            # Store the link to the coverage report artifact
+            test_badges_content="<br>[![Branches]($COVERAGE_ARTIFACTS_URL/badge-branches.svg)]($ARTIFACT_URL) [![Functions]($COVERAGE_ARTIFACTS_URL/badge-functions.svg)]($ARTIFACT_URL) [![Lines]($COVERAGE_ARTIFACTS_URL/badge-lines.svg)]($ARTIFACT_URL) [![Statements]($COVERAGE_ARTIFACTS_URL/badge-statements.svg)]($ARTIFACT_URL)"
+            echo "ARTIFACT URL: $ARTIFACT_URL"
 
-                  # Create the JSON body for the comment
-                  pr_comment_body="$HIDDEN_COMMENT $NEW_COMMENT"
+            # Setup the hidden comment and new comment
+            HIDDEN_COMMENT_START="<!-- Jest Coverage Comment:Begin -->"
+            HIDDEN_COMMENT_END="<!-- Jest Coverage Comment:End -->"
+            HIDDEN_COMMENT="$HIDDEN_COMMENT_START $HIDDEN_COMMENT_END"
+            NEW_COMMENT="$test_badges_content"
+            echo "New comment: $HIDDEN_COMMENT $NEW_COMMENT"
+
+            # Create the JSON body for the comment
+            pr_comment_body="$HIDDEN_COMMENT $NEW_COMMENT"
 
 
-                  # Get all comments for the PR
-                  COMMENTS=$(curl -H "Authorization: Bearer $GITHUB_TOKEN" "$PR_API_ENDPOINT/comments")
-                  echo "Comments: $COMMENTS"
+            # Get all comments for the PR
+            COMMENTS=$(curl -H "Authorization: Bearer $GITHUB_TOKEN" "$PR_API_ENDPOINT/comments")
+            echo "Comments: $COMMENTS"
 
-                  # Find the existing comment with the hidden marker
-                  COMMENT_ID=$(echo "$COMMENTS" | jq -r --arg COMMENT "$HIDDEN_COMMENT_START" '.[] | select(.body | contains($COMMENT)) | .id')
-                  echo "Comment ID: $COMMENT_ID" 
+            # Find the existing comment with the hidden marker
+            COMMENT_ID=$(echo "$COMMENTS" | jq -r --arg COMMENT "$HIDDEN_COMMENT_START" '.[] | select(.body | contains($COMMENT)) | .id')
+            echo "Comment ID: $COMMENT_ID" 
 
-                  # If the comment was found, delete it and create a new one
-                  response_code=0
-                  if [ "$COMMENT_ID" != "" ]; then
-                    echo "Existing coverage comment found. Deleting it..."
-                    authHeader="Authorization:Bearer $GITHUB_TOKEN"
-                    API_URL="$ISSUES_API_ENDPOINT/comments/$COMMENT_ID"
-                    curl_command=(-X DELETE "$API_URL" -H "$authHeader")
-                    # Execute the curl command and delete the existing comment
-                    $(curl "${curl_command[@]}")
+            # If the comment was found, delete it and create a new one
+            response_code=0
+            if [ "$COMMENT_ID" != "" ]; then
+              echo "Existing coverage comment found. Deleting it..."
+              authHeader="Authorization:Bearer $GITHUB_TOKEN"
+              API_URL="$ISSUES_API_ENDPOINT/comments/$COMMENT_ID"
+              curl_command=(-X DELETE "$API_URL" -H "$authHeader")
+              # Execute the curl command and delete the existing comment
+              $(curl "${curl_command[@]}")
 
-                    # Write the comment
-                    echo "Creating a new coverage comment..."
-                    response_code=$(./.circleci/helpers/write_pr_comment.sh NEW_COMMENT)
-                  else
-                    # Write the comment
-                    echo "Creating a new coverage comment..."
-                    response_code=$(./.circleci/helpers/write_pr_comment.sh NEW_COMMENT)
-                  fi
+              # Write the comment
+              echo "Creating a new coverage comment..."
+              response_code=$(./.circleci/helpers/write_pr_comment.sh NEW_COMMENT)
+            else
+              # Write the comment
+              echo "Creating a new coverage comment..."
+              response_code=$(./.circleci/helpers/write_pr_comment.sh NEW_COMMENT)
+            fi
 
-                  echo "response_code: $response_code"
-                  if [[ "$response_code" =~ ^2[0-9][0-9]$ ]]; then
-                    echo "Curl request was successful with HTTP status code $response_code"
-                  else
-                    echo "Curl request failed with HTTP status code $response_code"
-                    exit 1  # Fail the CircleCI job
-                  fi
-                when: on_success
-            - store_artifacts:
-                path: coverage
+            echo "response_code: $response_code"
+            if [[ "$response_code" =~ ^2[0-9][0-9]$ ]]; then
+              echo "Curl request was successful with HTTP status code $response_code"
+            else
+              echo "Curl request failed with HTTP status code $response_code"
+              exit 1  # Fail the CircleCI job
+            fi
+          when: on_success
+      - store_artifacts:
+          path: coverage
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
