@@ -44,7 +44,6 @@ jobs:
                 SKIP_FE_COVERAGE_CHECK="true"
               fi
             fi
-            touch tmp/fe_coverage
             echo "export SKIP_FE_COVERAGE_CHECK="$SKIP_FE_COVERAGE_CHECK" > /tmp/fe_coverage
             echo "Completed determining if the test coverage job should be skipped."
       - persist_to_workspace:
