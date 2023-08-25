@@ -34,11 +34,11 @@ jobs:
             UI_CHANGES_DETECTED=$(./.circleci/helpers/folder_has_changes.sh src)
             COMMIT_SKIP_COVERAGE_MESSAGE_FOUND=$(./.circleci/helpers/commit_summary_contains.sh skipTestCoverage)
             PR_DESCRIPTION_SKIP_MESSAGE_FOUND=$(./.circleci/helpers/pr_description_contains.sh $PR_API_ENDPOINT **Reason for missing FE tests**:)
-            echo "UI_CHANGES_DETECTED=$UI_CHANGES_DETECTED" >> $BASH_ENV
-            echo "COMMIT_SKIP_COVERAGE_MESSAGE_FOUND=$COMMIT_SKIP_COVERAGE_MESSAGE_FOUND" >> $BASH_ENV
-            echo "PR_DESCRIPTION_SKIP_MESSAGE_FOUND=$PR_DESCRIPTION_SKIP_MESSAGE_FOUND" >> $BASH_ENV
+            echo 'export UI_CHANGES_DETECTED="$UI_CHANGES_DETECTED"' >> "$BASH_ENV"
+            echo 'export COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$COMMIT_SKIP_COVERAGE_MESSAGE_FOUND"' >> "$BASH_ENV"
+            echo 'export PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$PR_DESCRIPTION_SKIP_MESSAGE_FOUND"' >> "$BASH_ENV"
       - persist_to_workspace:
-          root: workspace
+          root: /tmp/
           paths:
             - "fe_coverage"
   create-coverage-report:
