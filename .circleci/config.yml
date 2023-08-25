@@ -19,7 +19,6 @@ jobs:
           name: "Run tests and create coverage html report"
           command: |
             npm run test:coverage-badges
-          when: on_success
       - run:
           name: "Update PR with the coverage report"
           command: |
