@@ -70,7 +70,7 @@ jobs:
           command: |
             # Load the environment variables from the workspace
             echo "Loading environment variables from the workspace..."
-            source /tmp/workspace/fe_coverage
+            source /tmp/fe_coverage
 
             if [ "$SKIP_FE_COVERAGE_CHECK" == "true" ]; then
               echo "Skipping the job..."
