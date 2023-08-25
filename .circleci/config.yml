@@ -45,7 +45,7 @@ jobs:
               fi
             fi
 
-            echo 'export SKIP_FE_COVERAGE_CHECK="$SKIP_FE_COVERAGE_CHECK"' >> "$BASH_ENV"
+            echo 'export SKIP_FE_COVERAGE_CHECK="$SKIP_FE_COVERAGE_CHECK"' > tmp/fe_coverage
             echo "Completed determining if the test coverage job should be skipped."
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
@@ -54,6 +54,8 @@ jobs:
           # Must be relative path from root
           paths:
             - fe_coverage
+      outputs:
+          - parameter_values.txt
   create-coverage-report:
     docker:
       - image: cimg/node:16.19.0
