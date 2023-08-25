@@ -63,6 +63,7 @@
     },
     "coverageReporters": [
       "html",
+      "lcov",
       "json-summary",
       "text"
     ]
