@@ -104,11 +104,11 @@ jobs:
 
               # Write the comment
               echo "Creating a new coverage comment..."
-              response_code="$(tail -n 1 ./.circleci/helpers/write_pr_comment.sh '$pr_comment_body')"
+              response=$(./.circleci/helpers/write_pr_comment.sh "$pr_comment_body" | tail -n 1)
             else
               # Write the comment
               echo "Creating a new coverage comment..."
-              response_code="$(tail -n 1 ./.circleci/helpers/write_pr_comment.sh '$pr_comment_body')"
+              response=$(./.circleci/helpers/write_pr_comment.sh "$pr_comment_body" | tail -n 1)
             fi
 
             echo "response_code: $response_code"
