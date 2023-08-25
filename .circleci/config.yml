@@ -92,7 +92,7 @@ jobs:
             fi
             # Load the environment variables from the workspace
             echo "Loading environment variables from the workspace..."
-            ls /tmp/
+            ls /tmp/workspace
             source /tmp/workspace/fe_coverage
 
             # Store the link to the coverage report artifact
