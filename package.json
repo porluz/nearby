@@ -50,7 +50,7 @@
     "lint": "eslint src",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "test:coverage": "react-scripts test --config jest.config.js --env jsdom --coverage true --changedSince=main --watchAll false --passWithNoTests false",
+    "test:coverage": "react-scripts test --env=jsdom  --collectCoverage=true --changedSince=main --watchAll=false --passWithNoTests=false",
     "test:coverage-badges": "jest-coverage-badges",
     "eject": "react-scripts eject"
   },
