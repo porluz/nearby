@@ -49,7 +49,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "test:coverage": "react-scripts test --env=jsdom  --collectCoverage=true --changedSince=main --watchAll=false --passWithNoTests=false",
-    "test:coverage-badges": "npm run test:coverage && jest-coverage-badges",
+    "test:coverage-badges": "jest-coverage-badges",
     "eject": "react-scripts eject"
   },
   "jest": {
