@@ -54,6 +54,32 @@
     "test:coverage-badges": "jest-coverage-badges",
     "eject": "react-scripts eject"
   },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "coverageReporters": [
+      "html",
+      "lcov",
+      "json-summary",
+      "text"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 50,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
