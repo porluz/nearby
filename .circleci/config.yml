@@ -17,47 +17,6 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
-  create-coverage-report-prereq:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: Determine if test coverage job should be skipped
-          command: |
-            echo "Creating shared env variables"
-            PR_NUMBER="${CIRCLE_PULL_REQUEST##*/}"
-            COVERAGE_ARTIFACTS_URL="https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/${CIRCLE_NODE_INDEX}/coverage"
-            ISSUES_API_ENDPOINT="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/issues"
-            PR_API_ENDPOINT="$ISSUES_API_ENDPOINT/$PR_NUMBER"
-            ARTIFACT_URL="$COVERAGE_ARTIFACTS_URL/lcov-report/index.html"
-
-            echo "Checking if the test coverage job should be skipped..."
-            UI_CHANGES_DETECTED="$(.circleci/helpers/folder_has_changes.sh src)"
-            COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$(.circleci/helpers/commit_summary_contains.sh skipTestCoverage)"
-            PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$(.circleci/helpers/pr_description_contains.sh $PR_API_ENDPOINT '**Reason for missing FE tests**:')"
-            SKIP_FE_COVERAGE_CHECK="false"
-            echo "completed setting env vars"
-            # Check if any of the variables is  "true"
-            if [ "$UI_CHANGES_DETECTED" == "true" ]; then
-              # Check if at least one of the other two variables is "true"
-              if [ "$COMMIT_SKIP_COVERAGE_MESSAGE_FOUND" == "true" ] || [ "$PR_DESCRIPTION_SKIP_MESSAGE_FOUND" == "true" ]; then
-                SKIP_FE_COVERAGE_CHECK="true"
-              fi
-            fi
-            echo "PR_NUMBER=$PR_NUMBER" >> /tmp/fe_coverage
-            echo "COVERAGE_ARTIFACTS_URL=$COVERAGE_ARTIFACTS_URL" >> /tmp/fe_coverage
-            echo "ISSUES_API_ENDPOINT=$ISSUES_API_ENDPOINT" >> /tmp/fe_coverage
-            echo "PR_API_ENDPOINT=$PR_API_ENDPOINT" >> /tmp/fe_coverage
-            echo "ARTIFACT_URL=$ARTIFACT_URL" >> /tmp/fe_coverage
-            echo "Completed determining if the test coverage job should be skipped."
-      - persist_to_workspace:
-          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-          # taken to be the root directory of the workspace.
-          root: /tmp/
-          # Must be relative path from root
-          paths:
-            - fe_coverage
   create-coverage-report:
     docker:
       - image: cimg/node:16.19.0
@@ -145,11 +104,11 @@ jobs:
 
               # Write the comment
               echo "Creating a new coverage comment..."
-              response_code=$(./.circleci/helpers/write_pr_comment.sh NEW_COMMENT)
+              response_code=$(./.circleci/helpers/write_pr_comment.sh $pr_comment_body)
             else
               # Write the comment
               echo "Creating a new coverage comment..."
-              response_code=$(./.circleci/helpers/write_pr_comment.sh NEW_COMMENT)
+              response_code=$(./.circleci/helpers/write_pr_comment.sh $pr_comment_body)
             fi
 
             echo "response_code: $response_code"
@@ -171,7 +130,4 @@ workflows:
       - say-hello
   test-coverage-workflow:
     jobs:
-      - create-coverage-report-prereq
-      - create-coverage-report:
-          requires:
-            - create-coverage-report-prereq
+      - create-coverage-report
