@@ -6,7 +6,7 @@
 # set -o errexit
 # Use the error status of the first failure, rather than that of the last item in a pipeline.
 # set -o pipefail
-
+echo "PR_API_ENDPOINT: $PR_API_ENDPOINT"
 echo "Writing comment to PR..."
 if [ $# -eq 0 ]; then
   echo "Error: Please provide the PR comment body as an argument."

@@ -20,17 +20,18 @@ jobs:
   create-coverage-report-prereq:
     docker:
       - image: cimg/base:stable
-    environment:
-      PR_NUMBER: "${CIRCLE_PULL_REQUEST##*/}"
-      COVERAGE_ARTIFACTS_URL: "https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/${CIRCLE_NODE_INDEX}/coverage"
-      ISSUES_API_ENDPOINT: "https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/issues"
-      PR_API_ENDPOINT: "$ISSUES_API_ENDPOINT/$PR_NUMBER"
-      ARTIFACT_URL: "$COVERAGE_ARTIFACTS_URL/lcov-report/index.html"
     steps:
       - checkout
       - run:
           name: Determine if test coverage job should be skipped
           command: |
+            echo "Creating shared env variables"
+            PR_NUMBER: "${CIRCLE_PULL_REQUEST##*/}"
+            COVERAGE_ARTIFACTS_URL: "https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/${CIRCLE_NODE_INDEX}/coverage"
+            ISSUES_API_ENDPOINT: "https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/issues"
+            PR_API_ENDPOINT: "$ISSUES_API_ENDPOINT/$PR_NUMBER"
+            ARTIFACT_URL: "$COVERAGE_ARTIFACTS_URL/lcov-report/index.html"
+
             echo "Checking if the test coverage job should be skipped..."
             UI_CHANGES_DETECTED="$(.circleci/helpers/folder_has_changes.sh src)"
             COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$(.circleci/helpers/commit_summary_contains.sh skipTestCoverage)"
@@ -77,11 +78,6 @@ jobs:
 
             set -o pipefail
             npm run test:coverage-badges
-            if [ $? -eq 0 ]; then
-                echo "export FE_COVERAGE_FAILED=true" >> $BASH_ENV
-            else
-                echo "export FE_COVERAGE_FAILED=false" >> $BASH_ENV
-            fi
           when: on_success
       - run:
           name: "Update PR with the coverage report"
