@@ -1,7 +1,7 @@
 #!/bin/bash
-# Check if the PR description contains a query string
+# Check if the issue description contains a query string
 
-# Check if the PR API URL and query string arguments are provided
+# Check if the Issues API URL and query string arguments are provided
 if [ $# -ne 2 ]; then
   echo "Usage: $0 <ISSUES_API_URL> <QUERY_STRING>"
   exit 1
