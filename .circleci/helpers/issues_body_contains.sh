@@ -9,7 +9,7 @@ fi
 
 ISSUES_API_URL="$1"
 QUERY_STRING="$1"
-ISSUES_BODY=$(github_api/issues_get_body.sh "$ISSUES_API_URL")
+ISSUES_BODY=$(./circleci/helpers/github_api/issues_get_body.sh "$ISSUES_API_URL")
 
 # Check if the PR description contains the query string
 if [[ "$ISSUES_BODY" =~ $QUERY_STRING ]]; then

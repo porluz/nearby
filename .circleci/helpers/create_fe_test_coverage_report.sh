@@ -54,8 +54,7 @@ echo "Comment ID: $comment_id"
 # If the comment was found, delete it and create a new one, otherwise create a new comment
 response=""
 if [ "$comment_id" != "" ]; then
-    echo "Comment found. Deleting and creating a new coverage comment..."
-    echo "Comment found. Deleting and creating a new coverage comment..."
+    echo "Comment found. Deleting it and creating a new coverage comment..."
     $(./.circleci/helpers/github_api/issues_comments_delete.sh "$PR_ISSUE_ENDPOINT" "$comment_id")
     # Write the new comment
     response=$(./.circleci/helpers/github_api/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
