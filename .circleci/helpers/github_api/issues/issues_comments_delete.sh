@@ -16,5 +16,3 @@ curl_command=(-X DELETE "$API_URL" -H "$AUTH_HEADER")
 # Execute the curl command and delete the existing comment
 response=$(curl "${curl_command[@]}")
 echo "$response"
-
-
