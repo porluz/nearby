@@ -14,8 +14,6 @@ API_URL="$ISSUE_API_ENDPOINT/comments/$COMMENT_ID"
 # Create an array of curl args
 curl_command=(-X DELETE "$API_URL" -H "$AUTH_HEADER")
 # Execute the curl command and delete the existing comment
-curl_command=(-X DELETE "$API_URL" -H "$AUTH_HEADER")
-# Execute the curl command and capture the output in a variable
 response=$(curl "${curl_command[@]}")
 echo "$response"
 
