@@ -14,7 +14,7 @@ jobs:
           name: Install Dependencies
           command: npm install
       - run:
-          name: "Run tests and create coverage html report"
+          name: "Run tests for changed files and create coverage html report"
           command: |
             npm run test:coverage
       - run:
