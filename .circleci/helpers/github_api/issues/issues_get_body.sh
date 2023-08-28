@@ -8,7 +8,8 @@ if [ $# -ne 1 ]; then
 fi
 ISSUE_API_ENDPOINT="$1"
 
+apiVersion="X-GitHub-Api-Version: 2022-11-28"
 # Fetch the PR description using the GitHub API
-issue_body=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$ISSUE_API_ENDPOINT" | jq -r .body)
+issue_body=$(curl -s -H "$apiVersion" -H "Authorization: token $GITHUB_TOKEN" "$ISSUE_API_ENDPOINT" | jq -r .body)
 
 echo "$issue_body"

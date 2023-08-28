@@ -19,10 +19,11 @@ json=$(cat temp.json)
 payload="@./temp.json"
 authHeader="Authorization:Bearer $GITHUB_TOKEN"
 contentTypeHeader="Content-Type:application/json"
+apiVersion="X-GitHub-Api-Version: 2022-11-28"
 
 # Create an array of curl args
 comments_endpoint="$ISSUE_API_ENDPOINT/comments"
-curl_command=(-s -X POST "$comments_endpoint" -d "$payload" -H "$contentTypeHeader" -H "$authHeader")
+curl_command=(-s -X POST "$comments_endpoint" -d "$payload" -H "$contentTypeHeader" -H "$authHeader" -H "$apiVersion")
 
 # Execute the curl command and store the response code
 response_code=$(curl "${curl_command[@]}" -o /dev/null -w '%{http_code}')

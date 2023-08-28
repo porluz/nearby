@@ -13,11 +13,15 @@ fi
 ISSUE_API_ENDPOINT="$1"
 COMMENT_ID="$2"
 
-AUTH_HEADER="Authorization:Bearer $GITHUB_TOKEN"
-COMMENT_ENDPOINT="$ISSUE_API_ENDPOINT/comments/$COMMENT_ID"
+comment_endpoint="$ISSUE_API_ENDPOINT/comments/$COMMENT_ID"
+payload="@./temp.json"
+authHeader="Authorization:Bearer $GITHUB_TOKEN"
+contentTypeHeader="Content-Type:application/json"
+apiVersion="X-GitHub-Api-Version: 2022-11-28"
 
 # Create an array of curl args
-curl_command=(-s -X DELETE "$COMMENT_ENDPOINT" -H "$AUTH_HEADER")
+curl_command=(-s -X DELETE "$comment_endpoint" -H "$contentTypeHeader" -H "$authHeader" -H "$apiVersion")
+
 # Execute the curl command and delete the existing comment
 response_code=$(curl "${curl_command[@]}" -o /dev/null -w '%{http_code}')
 
