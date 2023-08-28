@@ -12,10 +12,4 @@ curl_command=(-X GET "$ISSUE_API_ENDPOINT" -H "$contentTypeHeader" -H "$authHead
 
 # Execute the curl command and store the response code
 response=$(curl "${curl_command[@]}")
-
-if [[ "$response" =~ ^2[0-9][0-9]$ ]]; then
-    echo "Curl request to get issue comments was successful"
-else
-    echo "Curl request to get issue comments failed"
-fi
 echo "$response"

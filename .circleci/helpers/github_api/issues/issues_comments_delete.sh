@@ -16,11 +16,5 @@ curl_command=(-X DELETE "$COMMENT_ENDPOINT" -H "$AUTH_HEADER")
 # Execute the curl command and delete the existing comment
 response_code=$(curl "${curl_command[@]}" -o /dev/null -w '%{http_code}')
 
-if [[ "$response_code" =~ ^2[0-9][0-9]$ ]]; then
-    echo "Curl request to delete issue comment was successful with HTTP status code $response_code"
-else
-    echo "Curl request to delete issue comment failed with HTTP status code $response_code"
-fi
-
 # Return the response code
 echo $response_code
