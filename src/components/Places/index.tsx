@@ -1,6 +1,7 @@
 import { usePlaces } from "./usePlaces";
 import { Heading, Card, Box, Link } from "theme-ui";
 import styled from "@emotion/styled";
+import { NewComponent } from "../NewComponent/NewComponent";
 
 const StyledPlacesList = styled.ul`
   list-style-type: none;
@@ -48,6 +49,7 @@ function NearbyPlaces({ nearbyPlaces, listPlacesRef }: NearbyPlacesProps) {
             );
           })}
       </StyledPlacesList>
+      <NewComponent />
     </>
   );
 }
