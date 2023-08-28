@@ -35,14 +35,12 @@ hidden_comment_start="<!-- Jest Coverage Comment:Begin -->"
 hidden_comment_end="<!-- Jest Coverage Comment:End -->"
 hidden_comment="$hidden_comment_start $hidden_comment_end"
 
-# Create the JSON body for the comment
+# Create the PR comment body
 pr_comment_body="$hidden_comment\n$test_badges_content"
-echo "New comment: $pr_comment_body"
 
+echo "Checking comments for existing FE coverage comment..."
 # Get all comments for the PR
 comments=$(./.circleci/helpers/github_api/issues_get_comments.sh "$PR_ISSUE_ENDPOINT")
-echo "Comments: $comments"
-
 # Find the existing comment with the hidden marker
 comment_id=$(echo "$comments" | jq -r --arg COMMENT "$hidden_comment_start" '.[] | select(.body | contains($COMMENT)) | .id')
 echo "Comment ID: $comment_id" 
@@ -50,16 +48,16 @@ echo "Comment ID: $comment_id"
 # If the comment was found, delete it and create a new one, otherwise create a new comment
 response=""
 if [ "$comment_id" != "" ]; then
-    # Delete the existing comment
+    echo "Comment found. Deleting and creating a new coverage comment..."
+    echo "Comment found. Deleting and creating a new coverage comment..."
     $(./.circleci/helpers/github_api/issues_comments_delete.sh "$PR_ISSUE_ENDPOINT" "$comment_id")
     # Write the new comment
-    echo "Creating a new coverage comment..."
     response=$(./.circleci/helpers/github_api/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
 else
-    # Write the comment
-    echo "Creating a new coverage comment..."
+    echo "Comment not found. Creating a new coverage comment..."
     response=$(./.circleci/helpers/github_api/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
 fi
+
 # Grab all the output for debugging, but only use the last line for the response code
 response_code=$(echo "$response" | tail -n 1)
 if [[ "$response_code" =~ ^2[0-9][0-9]$ ]]; then
