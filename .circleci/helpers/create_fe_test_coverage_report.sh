@@ -6,7 +6,6 @@ ISSUES_API_ENDPOINT="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRC
 PR_ISSUE_ENDPOINT="$ISSUES_API_ENDPOINT/$PR_NUMBER"
 COVERAGE_ARTIFACT_REPORT_URL="$CIRCLE_CI_ARTIFACTS_ENDPOINT/index.html"
 
-
 echo "Checking if the test coverage report should be skipped..."
 UI_CHANGES_DETECTED="$(./.circleci/helpers/folder_has_changes.sh src)"
 COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$(./.circleci/helpers/commit_summary_contains.sh skipTestCoverage)"
@@ -33,14 +32,12 @@ fi
 echo "Creating test coverage badges..."
 npm run test:coverage-badges
 
-# Create the test coverage badge links to the coverage report
-test_badges_content="**FE test coverage:**\n[![Branches]($CIRCLE_CI_ARTIFACTS_ENDPOINT/badge-branches.svg)]($COVERAGE_ARTIFACT_REPORT_URL) [![Functions]($CIRCLE_CI_ARTIFACTS_ENDPOINT/badge-functions.svg)]($COVERAGE_ARTIFACT_REPORT_URL) [![Lines]($CIRCLE_CI_ARTIFACTS_ENDPOINT/badge-lines.svg)]($COVERAGE_ARTIFACT_REPORT_URL) [![Statements]($CIRCLE_CI_ARTIFACTS_ENDPOINT/badge-statements.svg)]($COVERAGE_ARTIFACT_REPORT_URL)"
-
 # Setup the hidden comment and new comment
 hidden_comment_start="<!-- Jest Coverage Comment:Begin -->"
 hidden_comment_end="<!-- Jest Coverage Comment:End -->"
+# Create the test coverage badge links to the coverage report
+test_badges_content="**FE test coverage:**\n[![Branches]($CIRCLE_CI_ARTIFACTS_ENDPOINT/badge-branches.svg)]($COVERAGE_ARTIFACT_REPORT_URL) [![Functions]($CIRCLE_CI_ARTIFACTS_ENDPOINT/badge-functions.svg)]($COVERAGE_ARTIFACT_REPORT_URL) [![Lines]($CIRCLE_CI_ARTIFACTS_ENDPOINT/badge-lines.svg)]($COVERAGE_ARTIFACT_REPORT_URL) [![Statements]($CIRCLE_CI_ARTIFACTS_ENDPOINT/badge-statements.svg)]($COVERAGE_ARTIFACT_REPORT_URL)"
 hidden_comment="$hidden_comment_start $hidden_comment_end"
-
 # Create the PR comment body
 pr_comment_body="$hidden_comment\n$test_badges_content"
 
@@ -52,19 +49,19 @@ comment_id=$(echo "$comments" | jq -r --arg COMMENT "$hidden_comment_start" '.[]
 echo "Comment ID: $comment_id" 
 
 # If the comment was found, delete it and create a new one, otherwise create a new comment
-response=""
+issues_comment_create_response=""
 if [ "$comment_id" != "" ]; then
     echo "Comment found. Deleting it and creating a new coverage comment..."
     $(./.circleci/helpers/github_api/issues/issues_comments_delete.sh "$PR_ISSUE_ENDPOINT" "$comment_id")
     # Write the new comment
-    response=$(./.circleci/helpers/github_api/issues/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
+    issues_comment_create_response=$(./.circleci/helpers/github_api/issues/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
 else
     echo "Comment not found. Creating a new coverage comment..."
-    response=$(./.circleci/helpers/github_api/issues/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
+    issues_comment_create_response=$(./.circleci/helpers/github_api/issues/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
 fi
 
 # Grab all the output for debugging, but only use the last line for the response code
-response_code=$(echo "$response" | tail -n 1)
+response_code=$(echo "$issues_comment_create_response" | tail -n 1)
 if [[ "$response_code" =~ ^2[0-9][0-9]$ ]]; then
     echo "Curl request to create coverage comment was successful with HTTP status code $response_code"
 else
