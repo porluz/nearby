@@ -4,4 +4,5 @@ if [ $# -ne 1 ]; then
 fi
 ISSUE_API_ENDPOINT="$1"
 
-echo "$(curl -H 'Authorization: Bearer $GITHUB_TOKEN' $ISSUE_API_ENDPOINT/comments)"
+echo "$(curl -H "Authorization: Bearer $GITHUB_TOKEN" $ISSUE_API_ENDPOINT/comments)"
+
