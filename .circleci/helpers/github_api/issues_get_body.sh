@@ -9,6 +9,6 @@ fi
 ISSUE_API_ENDPOINT="$1"
 
 # Fetch the PR description using the GitHub API
-ISSUE_BODY=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$ISSUE_API_ENDPOINT" | jq -r .body)
+issue_body=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$ISSUE_API_ENDPOINT" | jq -r .body)
 
-echo "$ISSUE_BODY"
+echo "$issue_body"

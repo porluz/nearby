@@ -40,7 +40,7 @@ pr_comment_body="$hidden_comment\n$test_badges_content"
 echo "New comment: $pr_comment_body"
 
 # Get all comments for the PR
-comments=$(./.circleci/helpers/github_api/issues_get_comments.sh)
+comments=$(./.circleci/helpers/github_api/issues_get_comments.sh "$PR_ISSUE_ENDPOINT")
 echo "Comments: $comments"
 
 # Find the existing comment with the hidden marker
