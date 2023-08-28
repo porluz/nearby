@@ -1,4 +1,12 @@
 #!/bin/bash
+# Create FE test coverage report comment and posts it on the PR
+
+# Exit script if you try to use an uninitialized variable.
+set -o nounset
+# Exit script if a statement returns a non-true return value.
+set -o errexit
+# Use the error status of the first failure, rather than that of the last item in a pipeline.
+set -o pipefail
 
 PR_NUMBER="${CIRCLE_PULL_REQUEST##*/}"
 CIRCLE_CI_ARTIFACTS_ENDPOINT="https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/${CIRCLE_NODE_INDEX}/coverage"
