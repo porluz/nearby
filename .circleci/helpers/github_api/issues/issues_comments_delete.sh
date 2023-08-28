@@ -15,8 +15,6 @@ COMMENT_ID="$2"
 
 comment_endpoint="$ISSUE_API_ENDPOINT/comments/$COMMENT_ID"
 
-echo "comment_endpoint: $comment_endpoint"
-
 payload="@./temp.json"
 authHeader="Authorization:Bearer $GITHUB_TOKEN"
 contentTypeHeader="Content-Type:application/json"
