@@ -17,7 +17,7 @@ AUTH_HEADER="Authorization:Bearer $GITHUB_TOKEN"
 COMMENT_ENDPOINT="$ISSUE_API_ENDPOINT/comments/$COMMENT_ID"
 
 # Create an array of curl args
-curl_command=(-X DELETE "$COMMENT_ENDPOINT" -H "$AUTH_HEADER")
+curl_command=(-s -X DELETE "$COMMENT_ENDPOINT" -H "$AUTH_HEADER")
 # Execute the curl command and delete the existing comment
 response_code=$(curl "${curl_command[@]}" -o /dev/null -w '%{http_code}')
 

@@ -22,7 +22,7 @@ contentTypeHeader="Content-Type:application/json"
 
 # Create an array of curl args
 comments_endpoint="$ISSUE_API_ENDPOINT/comments"
-curl_command=(-X POST "$comments_endpoint" -d "$payload" -H "$contentTypeHeader" -H "$authHeader")
+curl_command=(-s -X POST "$comments_endpoint" -d "$payload" -H "$contentTypeHeader" -H "$authHeader")
 
 # Execute the curl command and store the response code
 response_code=$(curl "${curl_command[@]}" -o /dev/null -w '%{http_code}')
