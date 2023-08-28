@@ -20,7 +20,8 @@ jobs:
       - run:
           name: "Update PR with the coverage report"
           command: |
-            cat $(.circleci/helpers/create_fe_test_coverage_report.sh 2>&1)
+            output=$(.circleci/helpers/create_fe_test_coverage_report.sh 2>&1)
+            echo "$output"
           when: always
       - store_artifacts:
           path: coverage
