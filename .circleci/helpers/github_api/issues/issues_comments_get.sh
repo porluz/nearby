@@ -11,10 +11,11 @@ contentTypeHeader="Content-Type:application/json"
 curl_command=(-X GET "$ISSUE_API_ENDPOINT" -H "$contentTypeHeader" -H "$authHeader")
 
 # Execute the curl command and store the response code
-response_code=$(curl "${curl_command[@]}" -o /dev/null -w '%{http_code}')
+response=$(curl "${curl_command[@]}")
 
-if [[ "$response_code" =~ ^2[0-9][0-9]$ ]]; then
-    echo "Curl request to get issue comments was successful with HTTP status code $response_code"
+if [[ "$response" =~ ^2[0-9][0-9]$ ]]; then
+    echo "Curl request to get issue comments was successful"
 else
-    echo "Curl request to get issue comments failed with HTTP status code $response_code"
+    echo "Curl request to get issue comments failed"
 fi
+echo "$response"
