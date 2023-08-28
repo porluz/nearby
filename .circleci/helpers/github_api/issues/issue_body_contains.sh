@@ -1,6 +1,13 @@
 #!/bin/bash
 # Check if the issue description contains a query string
 
+# Exit script if you try to use an uninitialized variable.
+set -o nounset
+# Exit script if a statement returns a non-true return value.
+set -o errexit
+# Use the error status of the first failure, rather than that of the last item in a pipeline.
+set -o pipefail
+
 # Check if the Issues API URL and query string arguments are provided
 if [ $# -ne 2 ]; then
   echo "Usage: $0 <ISSUES_API_URL> <QUERY_STRING>"
