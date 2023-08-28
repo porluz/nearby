@@ -59,6 +59,8 @@ echo "Comment ID: $comment_id"
 issues_comment_create_response=""
 if [ "$comment_id" != "" ]; then
     echo "Comment found. Deleting it and creating a new coverage comment..."
+    delete_response_code=$(./.circleci/helpers/github_api/issues/issues_comments_delete.sh "$PR_ISSUE_ENDPOINT" "$comment_id")
+    echo "Curl request to delete existing comment was successful with HTTP status code $delete_response_code"
     $(./.circleci/helpers/github_api/issues/issues_comments_delete.sh "$PR_ISSUE_ENDPOINT" "$comment_id")
     # Write the new comment
     issues_comment_create_response=$(./.circleci/helpers/github_api/issues/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
