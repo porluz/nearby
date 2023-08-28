@@ -7,15 +7,13 @@ set -o pipefail
 
 # Get the ISSUE API endpoint and the comment id from the arguments
 if [ $# -ne 2 ]; then
-  echo "Usage: $0 <ISSUE_API_ENDPOINT> <COMMENT_ID>"
+  echo "Usage: $0 <ISSUES_API_ENDPOINT> <COMMENT_ID>"
   exit 1
 fi
-ISSUE_API_ENDPOINT="$1"
+ISSUES_API_ENDPOINT="$1"
 COMMENT_ID="$2"
 
-comment_endpoint="$ISSUE_API_ENDPOINT/comments/$COMMENT_ID"
-
-echo "comment_endpoint: $comment_endpoint"
+comment_endpoint="$ISSUES_API_ENDPOINT/comments/$COMMENT_ID"
 
 payload="@./temp.json"
 authHeader="Authorization:Bearer $GITHUB_TOKEN"
