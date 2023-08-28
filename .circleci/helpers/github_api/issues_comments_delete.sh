@@ -1,14 +1,15 @@
 #!/bin/bash
 
-if [ $# -eq 1 ]; then
-  echo "Error: Please provide the PR comment id as an argument."
+# Get the ISSUE API endpoint and the comment id from the arguments
+if [ $# -ne 2 ]; then
+  echo "Usage: $0 <ISSUE_API_ENDPOINT> <COMMENT_ID>"
   exit 1
 fi
+ISSUE_API_ENDPOINT="$1"
+COMMENT_ID="$2"
 
-# Get the comment id from the argument
-COMMENT_ID="$1"
 AUTH_HEADER="Authorization:Bearer $GITHUB_TOKEN"
-API_URL="$ISSUES_API_ENDPOINT/comments/$COMMENT_ID"
+API_URL="$ISSUE_API_ENDPOINT/comments/$COMMENT_ID"
 
 # Create an array of curl args
 curl_command=(-X DELETE "$API_URL" -H "$AUTH_HEADER)")
