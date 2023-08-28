@@ -10,7 +10,7 @@ COVERAGE_ARTIFACT_REPORT_URL="$CIRCLE_CI_ARTIFACTS_ENDPOINT/index.html"
 echo "Checking if the test coverage report should be skipped..."
 UI_CHANGES_DETECTED="$(./.circleci/helpers/folder_has_changes.sh src)"
 COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$(./.circleci/helpers/commit_summary_contains.sh skipTestCoverage)"
-PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$(./.circleci/helpers/issues_body_contains.sh $ISSUES_API_ENDPOINT '**Reason for missing FE tests**:')"
+PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$(./.circleci/helpers/issues/issues_body_contains.sh $ISSUES_API_ENDPOINT '**Reason for missing FE tests**:')"
 SKIP_FE_COVERAGE_CHECK="false"
 
 if [ "$UI_CHANGES_DETECTED" == "true" ]; then
