@@ -15,11 +15,11 @@ SKIP_FE_COVERAGE_CHECK="false"
 
 if [ "$UI_CHANGES_DETECTED" == "true" ]; then
     echo "UI changes detected"
-    if [ "$COMMIT_SKIP_COVERAGE_MESSAGE_FOUND" == "true" ] then
+    if [ "$COMMIT_SKIP_COVERAGE_MESSAGE_FOUND" == "true" ]; then
         echo "Commit message contains skipTestCoverage"
         SKIP_FE_COVERAGE_CHECK="true"
     fi
-    if [ "$PR_DESCRIPTION_SKIP_MESSAGE_FOUND" == "true" ] then
+    if [ "$PR_DESCRIPTION_SKIP_MESSAGE_FOUND" == "true" ]; then
         echo "PR description contains skip test coverage reason"
         SKIP_FE_COVERAGE_CHECK="true"
     fi
