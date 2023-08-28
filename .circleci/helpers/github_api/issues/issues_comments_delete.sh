@@ -9,11 +9,18 @@ ISSUE_API_ENDPOINT="$1"
 COMMENT_ID="$2"
 
 AUTH_HEADER="Authorization:Bearer $GITHUB_TOKEN"
-API_URL="$ISSUE_API_ENDPOINT/comments/$COMMENT_ID"
+COMMENT_ENDPOINT="$ISSUE_API_ENDPOINT/comments/$COMMENT_ID"
 
 # Create an array of curl args
-curl_command=(-X DELETE "$API_URL" -H "$AUTH_HEADER")
+curl_command=(-X DELETE "$COMMENT_ENDPOINT" -H "$AUTH_HEADER")
 # Execute the curl command and delete the existing comment
 response_code=$(curl "${curl_command[@]}" -o /dev/null -w '%{http_code}')
+
+if [[ "$response_code" =~ ^2[0-9][0-9]$ ]]; then
+    echo "Curl request to delete coverage comment was successful with HTTP status code $response_code"
+else
+    echo "Curl request to delete coverage comment failed with HTTP status code $response_code"
+fi
+
 # Return the response code
 echo $response_code
