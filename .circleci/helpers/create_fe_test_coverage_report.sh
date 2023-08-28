@@ -46,7 +46,7 @@ pr_comment_body="$hidden_comment\n$test_badges_content"
 
 echo "Checking comments for existing FE coverage comment..."
 # Get all comments for the PR
-comments=$(./.circleci/helpers/github_api/issues_get_comments.sh "$PR_ISSUE_ENDPOINT")
+comments=$(./.circleci/helpers/github_api/issues/issues_get_comments.sh "$PR_ISSUE_ENDPOINT")
 # Find the existing comment with the hidden marker
 comment_id=$(echo "$comments" | jq -r --arg COMMENT "$hidden_comment_start" '.[] | select(.body | contains($COMMENT)) | .id')
 echo "Comment ID: $comment_id" 
@@ -55,12 +55,12 @@ echo "Comment ID: $comment_id"
 response=""
 if [ "$comment_id" != "" ]; then
     echo "Comment found. Deleting it and creating a new coverage comment..."
-    $(./.circleci/helpers/github_api/issues_comments_delete.sh "$PR_ISSUE_ENDPOINT" "$comment_id")
+    $(./.circleci/helpers/github_api/issues/issues_comments_delete.sh "$PR_ISSUE_ENDPOINT" "$comment_id")
     # Write the new comment
-    response=$(./.circleci/helpers/github_api/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
+    response=$(./.circleci/helpers/github_api/issues/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
 else
     echo "Comment not found. Creating a new coverage comment..."
-    response=$(./.circleci/helpers/github_api/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
+    response=$(./.circleci/helpers/github_api/issues/issues_comments_post.sh "$PR_ISSUE_ENDPOINT" "$pr_comment_body")
 fi
 
 # Grab all the output for debugging, but only use the last line for the response code
