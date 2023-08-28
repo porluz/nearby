@@ -43,7 +43,7 @@ pr_comment_body="$hidden_comment\n$test_badges_content"
 
 echo "Checking comments for existing FE coverage comment..."
 # Get all comments for the PR
-comments=$(./.circleci/helpers/github_api/issues/issues_comments_get.sh "$PR_ISSUE_ENDPOINT")
+comments=$(./.circleci/helpers/github_api/issues/issues_comments_get.sh "$PR_ISSUE_ENDPOINT" | tail -n 1)
 echo "Comments: $comments" 
 # Find the existing comment with the hidden marker
 comment_id=$(echo "$comments" | jq -r --arg COMMENT "$hidden_comment_start" '.[] | select(.body | contains($COMMENT)) | .id')
