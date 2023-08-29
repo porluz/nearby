@@ -17,7 +17,7 @@ QUERY_STRING="$2"
 ISSUE_BODY=$(./.circleci/helpers/github_api/issues/issues_get_body.sh "$ISSUE_API_ENDPOINT")
 
 # Check if the PR description contains the query string
-if [[ "$ISSUE_BODY" =~ (?i)$QUERY_STRING ]]; then
+if [[ "$ISSUE_BODY" =~ .*${QUERY_STRING}.* ]]; then
   echo true
 else
   echo false
