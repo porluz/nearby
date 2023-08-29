@@ -16,8 +16,8 @@ echo "Checking if the test coverage report should be skipped..."
 SKIP_FE_COVERAGE_DESCRIPTION_TEXT="**Reason for missing FE tests**:"
 SKIP_FE_COVERAGE_COMMIT_TEXT="skipTestCoverage"
 UI_CHANGES_DETECTED="$(./.circleci/helpers/folder_has_changes.sh ./src)"
-COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$(./.circleci/helpers/commit_summary_contains.sh $SKIP_FE_COVERAGE_COMMIT_TEXT)"
-PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$(./.circleci/helpers/github_api/issues/issue_body_contains.sh $PR_ISSUE_ENDPOINT $SKIP_FE_COVERAGE_DESCRIPTION_TEXT)"
+COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$(./.circleci/helpers/commit_summary_contains.sh "$SKIP_FE_COVERAGE_COMMIT_TEXT")"
+PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$(./.circleci/helpers/github_api/issues/issue_body_contains.sh "$PR_ISSUE_ENDPOINT" "$SKIP_FE_COVERAGE_DESCRIPTION_TEXT")"
 SKIP_FE_COVERAGE_CHECK="false"
 
 if [ "$UI_CHANGES_DETECTED" == "true" ]; then
