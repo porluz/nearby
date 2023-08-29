@@ -14,9 +14,19 @@ fi
 
 folder_path="$1"  # Get the folder path from the argument
 
-# Check for changes in the specified folder
-if git diff --name-only HEAD^..HEAD | grep -q "^$folder_path/"; then
+# Get the name of the current branch
+current_branch=$(git symbolic-ref --short HEAD)
+
+# Get the name of the corresponding branch on 'origin'
+origin_branch="origin/main"
+
+# Get the list of commits that affect the specified folder in the current branch
+commits=$(git log --oneline $origin_branch..$current_branch -- $folder_path)
+
+# Check if there are any commits that affect the folder
+if [ -n "$commits" ]; then
   echo true
 else
   echo false
 fi
+

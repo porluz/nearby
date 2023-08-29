@@ -29,6 +29,9 @@ if [ "$UI_CHANGES_DETECTED" == "true" ]; then
         SKIP_FE_COVERAGE_CHECK="true"
     fi
 else
+    commits=$(git log --oneline $origin_branch..$current_branch -- ./src)
+    echo "Commits: $commits"
+    echo "UI_CHANGES_DETECTED: $UI_CHANGES_DETECTED"
     echo "No UI changes detected"
     SKIP_FE_COVERAGE_CHECK="true"
 fi
