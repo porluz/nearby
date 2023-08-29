@@ -13,7 +13,7 @@ if [ $# -ne 2 ]; then
 fi
 
 ISSUE_API_ENDPOINT="$1"
-QUERY_STRING="$1"
+QUERY_STRING="$2"
 ISSUE_BODY=$(./.circleci/helpers/github_api/issues/issues_get_body.sh "$ISSUE_API_ENDPOINT")
 
 # Check if the PR description contains the query string

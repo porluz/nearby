@@ -29,6 +29,8 @@ if [ "$UI_CHANGES_DETECTED" == "true" ]; then
     if [ "$PR_DESCRIPTION_SKIP_MESSAGE_FOUND" == "true" ]; then
         echo "PR description contains skip test coverage reason"
         SKIP_FE_COVERAGE_CHECK="true"
+    else 
+        echo "PR_DESCRIPTION_SKIP_MESSAGE_FOUND: $PR_DESCRIPTION_SKIP_MESSAGE_FOUND"
     fi
 else
     commits=$(git log --oneline $origin_branch..$current_branch -- ./src)
