@@ -31,6 +31,10 @@ if [ "$UI_CHANGES_DETECTED" == "true" ]; then
         SKIP_FE_COVERAGE_CHECK="true"
     else 
         echo "PR_DESCRIPTION_SKIP_MESSAGE_FOUND: $PR_DESCRIPTION_SKIP_MESSAGE_FOUND"
+        issue_body=$(curl -s -H "$apiVersion" -H "Authorization: token $GITHUB_TOKEN" "$ISSUE_API_ENDPOINT" | jq -r .body)
+        echo "issue_body: $issue_body"
+        echo "PR_ISSUE_ENDPOINT: $PR_ISSUE_ENDPOINT"
+        echo "SKIP_FE_COVERAGE_DESCRIPTION_TEXT: $SKIP_FE_COVERAGE_DESCRIPTION_TEXT"
     fi
 else
     echo "No UI changes detected"
