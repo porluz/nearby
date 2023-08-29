@@ -34,7 +34,7 @@ else
 fi
 
 if [ "$SKIP_FE_COVERAGE_CHECK" == "true" ]; then
-    echo "Skipping the FE test coverage job..."
+    echo "Skipping the FE test coverage report job..."
     exit 0  # Exit with success status to skip the job
 fi
 
