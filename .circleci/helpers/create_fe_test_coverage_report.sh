@@ -14,10 +14,11 @@ COVERAGE_ARTIFACT_REPORT_URL="$CIRCLE_CI_ARTIFACTS_ENDPOINT/index.html"
 
 echo "Checking if the test coverage report should be skipped..."
 SKIP_FE_COVERAGE_DESCRIPTION_TEXT="**Reason for missing FE tests**:"
+SKIP_FE_COVERAGE_DESCRIPTION_TEXT_ESCAPED==$(printf "%s\n" "$SKIP_FE_COVERAGE_DESCRIPTION_TEXT" | sed 's/[][()\.^$?*+]/\\&/g')
 SKIP_FE_COVERAGE_COMMIT_TEXT="skipTestCoverage"
 UI_CHANGES_DETECTED="$(./.circleci/helpers/folder_has_changes.sh ./src)"
 COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$(./.circleci/helpers/commit_summary_contains.sh "$SKIP_FE_COVERAGE_COMMIT_TEXT")"
-PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$(./.circleci/helpers/github_api/issues/issue_body_contains.sh "$PR_ISSUE_ENDPOINT" "$SKIP_FE_COVERAGE_DESCRIPTION_TEXT")"
+PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$(./.circleci/helpers/github_api/issues/issue_body_contains.sh "$PR_ISSUE_ENDPOINT" "$SKIP_FE_COVERAGE_DESCRIPTION_TEXT_ESCAPED")"
 SKIP_FE_COVERAGE_CHECK="false"
 
 if [ "$UI_CHANGES_DETECTED" == "true" ]; then
@@ -29,20 +30,6 @@ if [ "$UI_CHANGES_DETECTED" == "true" ]; then
     if [ "$PR_DESCRIPTION_SKIP_MESSAGE_FOUND" == "true" ]; then
         echo "PR description contains skip test coverage reason"
         SKIP_FE_COVERAGE_CHECK="true"
-    else 
-        echo "PR_DESCRIPTION_SKIP_MESSAGE_FOUND: $PR_DESCRIPTION_SKIP_MESSAGE_FOUND"
-        issue_body=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$PR_ISSUE_ENDPOINT" | jq -r .body)
-        echo "issue_body: $issue_body"
-        echo "PR_ISSUE_ENDPOINT: $PR_ISSUE_ENDPOINT"
-        echo "SKIP_FE_COVERAGE_DESCRIPTION_TEXT: $SKIP_FE_COVERAGE_DESCRIPTION_TEXT"
-        echo "ISSUE_BODY (visible): '$issue_body'"
-        echo "ISSUE_BODY (hidden): '$(echo "$issue_body" | cat -v)'"
-        QUERY_STRING_ESCAPED=$(printf "%s\n" "$SKIP_FE_COVERAGE_DESCRIPTION_TEXT" | sed 's/[][()\.^$?*+]/\\&/g')
-        if [[ "$issue_body" =~ .*${QUERY_STRING_ESCAPED}.* ]]; then
-            echo "PR description contains skip test coverage reason"
-        else
-            echo "PR description does not contain skip test coverage reason"
-        fi
     fi
 else
     echo "No UI changes detected"
