@@ -55,6 +55,8 @@
     "eject": "react-scripts eject"
   },
   "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
     "coverageReporters": [
       "html",
       "lcov",

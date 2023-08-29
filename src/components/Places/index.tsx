@@ -1,6 +1,7 @@
 import { usePlaces } from "./usePlaces";
 import { Heading, Card, Box, Link } from "theme-ui";
 import styled from "@emotion/styled";
+import { NewButton } from "../NewButton/NewButton";
 
 const StyledPlacesList = styled.ul`
   list-style-type: none;
@@ -72,6 +73,7 @@ function Places() {
             Places
           </Heading>
           <NearbyPlaces nearbyPlaces={nearbyPlaces} listPlacesRef={listPlacesRef} />
+          <NewButton />
         </>
       </Box>
     </>
