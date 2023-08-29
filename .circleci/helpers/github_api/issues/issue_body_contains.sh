@@ -8,16 +8,16 @@ set -o pipefail
 
 # Check if the Issues API URL and query string arguments are provided
 if [ $# -ne 2 ]; then
-  echo "Usage: $0 <ISSUES_API_URL> <QUERY_STRING>"
+  echo "Usage: $0 <ISSUE_API_ENDPOINT> <QUERY_STRING>"
   exit 1
 fi
 
-ISSUES_API_URL="$1"
+ISSUE_API_ENDPOINT="$1"
 QUERY_STRING="$1"
-ISSUES_BODY=$(./.circleci/helpers/github_api/issues/issues_get_body.sh "$ISSUES_API_URL")
+ISSUE_BODY=$(./.circleci/helpers/github_api/issues/issues_get_body.sh "$ISSUE_API_ENDPOINT")
 
 # Check if the PR description contains the query string
-if [[ "$ISSUES_BODY" =~ $QUERY_STRING ]]; then
+if [[ "$ISSUE_BODY" =~ $QUERY_STRING ]]; then
   echo true
 else
   echo false
