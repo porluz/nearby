@@ -8,7 +8,7 @@ set -o pipefail
 
 # Check if the Issues API URL and query string arguments are provided
 if [ $# -ne 2 ]; then
-  echo "Usage: $0 <ISSUE_API_ENDPOINT> <QUERY_STRING>"
+   echo "Usage: $0 <ISSUE_API_ENDPOINT> <QUERY_STRING>"
   exit 1
 fi
 
