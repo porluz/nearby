@@ -15,7 +15,7 @@ fi
 ISSUE_API_ENDPOINT="$1"
 QUERY_STRING="$2"
 ISSUE_BODY=$(./.circleci/helpers/github_api/issues/issues_get_body.sh "$ISSUE_API_ENDPOINT")
-
+QUERY_STRING_ESCAPED=$(printf "%s\n" "$QUERY_STRING" | sed 's/[][()\.^$?*+]/\\&/g')
 # Check if the PR description contains the query string
  if [[ "$issue_body" =~ .*${QUERY_STRING_ESCAPED}.* ]]; then
   echo true
