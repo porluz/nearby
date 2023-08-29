@@ -35,6 +35,11 @@ if [ "$UI_CHANGES_DETECTED" == "true" ]; then
         echo "issue_body: $issue_body"
         echo "PR_ISSUE_ENDPOINT: $PR_ISSUE_ENDPOINT"
         echo "SKIP_FE_COVERAGE_DESCRIPTION_TEXT: $SKIP_FE_COVERAGE_DESCRIPTION_TEXT"
+        if [[ "$issue_body" =~ .*${PR_DESCRIPTION_SKIP_MESSAGE_FOUND}.* ]]; then
+            echo "PR description contains skip test coverage reason"
+        else
+            echo "PR description does not contain skip test coverage reason"
+        fi
     fi
 else
     echo "No UI changes detected"
