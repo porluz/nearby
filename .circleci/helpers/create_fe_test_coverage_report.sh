@@ -13,9 +13,11 @@ PR_ISSUE_ENDPOINT="$ISSUES_API_ENDPOINT/$PR_NUMBER"
 COVERAGE_ARTIFACT_REPORT_URL="$CIRCLE_CI_ARTIFACTS_ENDPOINT/index.html"
 
 echo "Checking if the test coverage report should be skipped..."
+SKIP_FE_COVERAGE_DESCRIPTION_TEXT="**Reason for missing FE tests**:"
+SKIP_FE_COVERAGE_COMMIT_TEXT="skipTestCoverage"
 UI_CHANGES_DETECTED="$(./.circleci/helpers/folder_has_changes.sh ./src)"
-COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$(./.circleci/helpers/commit_summary_contains.sh skipTestCoverage)"
-PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$(./.circleci/helpers/github_api/issues/issue_body_contains.sh $PR_ISSUE_ENDPOINT '**Reason for missing FE tests**:')"
+COMMIT_SKIP_COVERAGE_MESSAGE_FOUND="$(./.circleci/helpers/commit_summary_contains.sh "$SKIP_FE_COVERAGE_COMMIT_TEXT")"
+PR_DESCRIPTION_SKIP_MESSAGE_FOUND="$(./.circleci/helpers/github_api/issues/issue_body_contains.sh "$PR_ISSUE_ENDPOINT" "$SKIP_FE_COVERAGE_DESCRIPTION_TEXT")"
 SKIP_FE_COVERAGE_CHECK="false"
 
 if [ "$UI_CHANGES_DETECTED" == "true" ]; then
@@ -53,7 +55,6 @@ pr_comment_body="$hidden_comment\n$test_badges_content"
 echo "Checking comments for existing FE coverage comment..."
 # Get all comments for the PR
 comments=$(./.circleci/helpers/github_api/issues/issues_comments_get.sh "$PR_ISSUE_ENDPOINT")
-echo "Comments: $comments" 
 # Find the existing comment with the hidden marker
 comment_id=$(echo "$comments" | jq -r --arg COMMENT "$hidden_comment_start" '.[] | select(.body | contains($COMMENT)) | .id')
 echo "Comment ID: $comment_id" 
