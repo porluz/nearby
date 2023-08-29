@@ -35,8 +35,8 @@ if [ "$UI_CHANGES_DETECTED" == "true" ]; then
         echo "issue_body: $issue_body"
         echo "PR_ISSUE_ENDPOINT: $PR_ISSUE_ENDPOINT"
         echo "SKIP_FE_COVERAGE_DESCRIPTION_TEXT: $SKIP_FE_COVERAGE_DESCRIPTION_TEXT"
-        echo "ISSUE_BODY (visible): '$ISSUE_BODY'"
-        echo "ISSUE_BODY (hidden): '$(echo "$ISSUE_BODY" | cat -v)'"
+        echo "ISSUE_BODY (visible): '$issue_body'"
+        echo "ISSUE_BODY (hidden): '$(echo "$issue_body" | cat -v)'"
         QUERY_STRING_ESCAPED=$(printf "%s\n" "$SKIP_FE_COVERAGE_DESCRIPTION_TEXT" | sed 's/[][()\.^$?*+]/\\&/g')
         if [[ "$issue_body" =~ .*${QUERY_STRING_ESCAPED}.* ]]; then
             echo "PR description contains skip test coverage reason"
